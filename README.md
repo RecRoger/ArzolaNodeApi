@@ -1,2 +1,0 @@
-# ArzolaNodeApi
-Coderhouse Node Class
