@@ -1,0 +1,18 @@
+{
+  "name": "coderhouse-node",
+  "version": "1.0.0",
+  "description": "node server project from coderhouse class",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "RecRoger",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.16"
+  }
+}
