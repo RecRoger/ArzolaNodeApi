@@ -1,19 +1,24 @@
 import express from 'express'
-import { FileManager } from "./fileManager.js";
+import { productsRouter } from './routes/products.routes.js'
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = 8080;
-const productFile = new FileManager('products');
 
-app.get('/products', async (req, res)=> {
-    let items = await productFile.getAll();
-    return res.status(200).json(items)
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+
+app.use(express.static(__dirname + '/public'))
+
+app.get('/',  (req, res) => {
+    res.sendFile('/index.html')
 })
 
-app.get('/randomProduct', async (req, res)=> {
-    let item = await productFile.getById();
-    return res.status(200).json(item)
-})
+app.use('/api/products', productsRouter)
 
 app.listen(PORT, () => {
     console.log(`>> Server running on PORT: ${PORT}`)

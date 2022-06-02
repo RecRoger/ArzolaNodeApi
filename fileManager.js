@@ -22,7 +22,7 @@ export class FileManager {
     async save(obj) {
         try {
             const data = await this.getAll();
-            let id = data.length ? Number(data[data.length - 1].id) : 0;
+            let id = data.length ? Number(data[data.length - 1].id) : 1;
             id++;
             data.push({id: id, ...obj});
             await fs.promises.writeFile(`./${this.fileName}.txt`, JSON.stringify(data))
@@ -46,13 +46,36 @@ export class FileManager {
     }
 
     async getById(id) {
+        if(!id) {
+            console.log('> id invalido: ', id);
+            return null
+        }
         try {
             const data = await this.getAll();
-            if(!id) {
-                id = Math.floor(Math.random() * (data.length - 0)) + 0;
-            }
             const product = data.find(obj => obj.id === id);
             console.log('> Con el id ', id, ' tenemos ', product)  
+            return product;
+        }catch (err) {
+            console.log('> No se ha podido leer el archivo', err);
+            return null;
+        }
+    }
+
+    async update(id, obj) {
+        if(!id && id != 0) {
+            console.log('> id invalido: ', id);
+            return null
+        }
+        try {
+            const products = await this.getAll();
+            const product = products.find(obj => obj.id === id);
+            console.log('> Con el id ', id, ' tenemos ', product) 
+
+            for(let key of Object.keys(obj)) {
+                if(key != 'id')
+                product[key] = obj[key]
+            }
+            await fs.promises.writeFile(`./${this.fileName}.txt`, JSON.stringify(products))
             return product;
         }catch (err) {
             console.log('> No se ha podido leer el archivo', err);
