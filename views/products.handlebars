@@ -1,0 +1,36 @@
+<h5>Nuestros productos</h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col"></th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Precio</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+            <th scope="row">{{this.id}}</th>
+            <td>
+                <img src="{{this.thumbnail}}" style="height: 50px; width: 50px" class="img-thumbnail">
+            </td>
+            <td>{{this.title}}</td>
+            <td>{{this.price}}$</td>
+            <td class="col-2">
+                <a class="my-1" href="/edit/{{this.id}}"><button class="btn btn-secondary me-2 my-1">
+                        Editar
+                    </button></a>
+                <a class="my-1" href="/api/products/delete/{{this.id}}">
+                    <button class="btn btn-dark">Eliminar</button>
+                </a>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<a href="/new">
+    <button class="btn btn-outline-dark">Añadir nuevo producto</button>
+</a>

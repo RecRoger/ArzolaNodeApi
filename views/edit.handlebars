@@ -1,0 +1,31 @@
+<h5>
+    <a href="/">
+        <button class="btn btn-link">
+            < </button></a>
+    Editar elemento
+</h5>
+
+<div class="card p-3 mt-4">
+    <form class="mt-2" id="updateForm" action="/api/products/{{id}}" method="POST">
+        <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="id" name="id" placeholder="{{id}}" disabled value="{{id}}">
+            <label for="id">Id a editar</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Nombre del elemento"
+                value="{{title}}">
+            <label for="title">Nombre</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="price" name="price" placeholder="Precio del elemento"
+                value="{{price}}">
+            <label for="price">Precio</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="thumbnail" name="thumbnail" placeholder="Url de la foto"
+                value="{{thumbnail}}">
+            <label for="thumbnail">URL de la Foto</label>
+        </div>
+        <button type="submit" class="btn btn-dark mt-3">Editar Elemento</button>
+    </form>
+</div>

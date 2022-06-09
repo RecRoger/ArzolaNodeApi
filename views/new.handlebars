@@ -1,0 +1,24 @@
+<h5>
+    <a href="/">
+        <button class="btn btn-link">
+            < </button></a>
+    Crear nuevo elemento
+</h5>
+
+<div class="card p-3 mt-4">
+    <form class="mt-2" action="/api/products" method="POST">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="title" name="title" placeholder="Nombre del elemento">
+            <label for="title">Nombre</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="number" class="form-control" id="price" name="price" placeholder="Precio del elemento">
+            <label for="price">Precio</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="thumbnail" name="thumbnail" placeholder="Url de la foto">
+            <label for="thumbnail">Foto</label>
+        </div>
+        <button type="submit" class="btn btn-dark mt-3">Crear Elemento</button>
+    </form>
+</div>

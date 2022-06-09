@@ -17,7 +17,9 @@ productsRouter.post('/:id', async (req, res) => {
     const data = req.body
     console.log('> Actualizar elemento', id, data)
     let item = await productFile.update(id, data);
-    return res.status(200).json(item)
+    // return res.status(200).json(item)
+    let items = await productFile.getAll();
+    return res.render('products', { products: items })
 })
 
 // productsRouter.delete('/:id', async (req, res) => {
@@ -32,11 +34,23 @@ productsRouter.post('/delete/:id', async (req, res) => {
         return res.status(404).json({'error': err})
     }
 })
+productsRouter.get('/delete/:id', async (req, res) => {
+    const id = Number(req.params.id)
+    console.log('> Eliminar elemento', id)
+    try {
+        let edition = await productFile.deleteById(id);
+        let items = await productFile.getAll();
+        return res.render('products', { products: items })
+    } catch (err) {
+        return res.status(404).json({'error': err})
+    }
+})
 
 productsRouter.get('/', async (req, res) => {
     console.log('> Consultar todos los elemento')
     let items = await productFile.getAll();
-    return res.status(200).json(items)
+    // return res.status(200).json(items)
+    return res.render('products', { products: items })
 })
 
 productsRouter.post('/', async (req, res) => {
@@ -49,5 +63,8 @@ productsRouter.post('/', async (req, res) => {
     }
 
     let newId = await productFile.save(data);
-    return res.status(200).json(newId && {id: newId, ...data} || {error: "No Item"})
+    // return res.status(200).json(newId && {id: newId, ...data} || {error: "No Item"})
+    
+    let items = await productFile.getAll();
+    return res.render('products', { products: items })
 })

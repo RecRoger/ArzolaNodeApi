@@ -13,7 +13,7 @@ export class FileManager {
                 new ProductData ('Baston de Jockey', 245, 'https://m.media-amazon.com/images/I/317KUxBbizL.jpg'),
                 new ProductData ('Raqueta de Tenis', 280.50, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1h3bJLhziWwoFVIKOC3K_YS4h7xdWSlSgY_-poGlM3JkvushXW_snhiYcJ7K1LPHWZLc&usqp=CAU'),
                 new ProductData ('Tabla de surf', 725, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7WkgTCIfOybKveA2-S5tgVEK2f4RqqjbUqoHNR8UeGuzPxu6WG8VlIrdMDq__NaTuWbo&usqp=CAU')
-            ].map((prod, index) => ({id: index, ...prod}))
+            ].map((prod, index) => ({id: index+1, ...prod}))
             fs.writeFileSync(`./${this.fileName}.txt`, JSON.stringify(defaultProducts));
             console.log(`>> El archivo ${this.fileName}.txt fue creado correctamente`);
         }
