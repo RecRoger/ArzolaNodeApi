@@ -20,10 +20,10 @@
             <td>{{this.title}}</td>
             <td>{{this.price}}$</td>
             <td class="col-2">
-                <a class="my-1" href="/edit/{{this.id}}"><button class="btn btn-secondary me-2 my-1">
+                <a class="my-1" href="/products/edit/{{this.id}}"><button class="btn btn-secondary me-2 my-1">
                         Editar
                     </button></a>
-                <a class="my-1" href="/api/products/delete/{{this.id}}">
+                <a class="my-1" href="/products/delete/{{this.id}}">
                     <button class="btn btn-dark">Eliminar</button>
                 </a>
             </td>
@@ -31,6 +31,9 @@
         {{/each}}
     </tbody>
 </table>
-<a href="/new">
+<a href="/products/new">
     <button class="btn btn-outline-dark">Añadir nuevo producto</button>
+</a>
+<a href="/chat" class="ms-3">
+    <button class="btn btn-dark">Ver Chat</button>
 </a>

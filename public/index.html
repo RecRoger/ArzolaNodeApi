@@ -23,13 +23,13 @@
             <div class="col-4 d-flex flex-column">
                 <div class="card p-3 w-100 mb-3">
                     <h5>Consultar todos los elementos</h5>
-                    <a href="/api/products" class="w-100 mt-3">
+                    <a href="/products" class="w-100 mt-3">
                         <button type="button" class="btn btn-dark w-100">Consultar</button>
                     </a>
                 </div>
                 <div class="card p-3 w-100">
                     <h5>Crear nuevo elemento</h5>
-                    <form class="mt-2" action="/api/products" method="POST">
+                    <form class="mt-2" action="/products" method="POST">
                         <div class="form-floating mb-3">
                             <input type="text" class="form-control" id="title" name="title"
                                 placeholder="Nombre del elemento">
@@ -52,7 +52,7 @@
             <div class="col-4 d-flex">
                 <div class="card p-3 w-100">
                     <h5>Editar elemento</h5>
-                    <form class="mt-2" id="updateForm" action="/api/products" method="POST">
+                    <form class="mt-2" id="updateForm" action="/products" method="POST">
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control" id="id" name="id" placeholder="Id">
                             <label for="id">Id a editar</label>
@@ -78,7 +78,7 @@
                             function updateElement() {
                                 const form = document.getElementById('updateForm')
                                 const idInput = document.getElementById('id').value
-                                const url = '/api/products/' + idInput
+                                const url = '/products/' + idInput
                                 form.setAttribute('action', url);
                                 form.submit();
                             }
@@ -93,21 +93,21 @@
                         <input type="number" class="form-control" id="getId" name="getId" placeholder="Id">
                         <label for="getId">Id a Consultar</label>
                     </div>
-                    <a href="/api/products" class="w-100 mt-3" id="getUrl" onClick="getElement()">
+                    <a href="/products" class="w-100 mt-3" id="getUrl" onClick="getElement()">
                         <button type="button" class="btn btn-dark w-100">Consultar</button>
                     </a>
                     <script>
                         function getElement() {
                             const form = document.getElementById('getUrl')
                             const idInput = document.getElementById('getId').value
-                            const url = '/api/products/' + idInput
+                            const url = '/products/' + idInput
                             form.setAttribute('href', url);
                         }
                     </script>
                 </div>
                 <div class="card p-3 w-100 h-100">
                     <h5>Eliminar elemento</h5>
-                    <form class="mt-2" id="deleteForm" action="/api/products" method="POST">
+                    <form class="mt-2" id="deleteForm" action="/products" method="POST">
                         <div class="form-floating">
                             <input type="number" class="form-control" id="idDelete" name="idDelete" placeholder="Id">
                             <label for="idDelete">Id a Eliminar</label>
@@ -118,7 +118,7 @@
                             function deleteElement() {
                                 const form = document.getElementById('deleteForm')
                                 const idInput = document.getElementById('idDelete').value
-                                const url = '/api/products/delete/' + idInput
+                                const url = '/products/delete/' + idInput
                                 form.setAttribute('action', url);
                                 form.submit();
                             }
