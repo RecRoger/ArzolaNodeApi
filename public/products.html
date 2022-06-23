@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Rogr NodeJs</title>
+</head>
+
+<body>
+    <div class="container mt-4">
+        <h1>
+            Bienvenido
+        </h1>
+        <p>
+            Hola, soy Rogr y por aca podrás probar mi nueva aplicacion de Node, espero la disfrutes.
+        </p>
+
+        <div class="row">
+            <ul class="nav nav-tabs pe-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./chat">Ver Chat</a>
+                </li>
+                <li class="nav-item ms-auto">
+                    <a class="nav-link active" href="./products">Editar Productos</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row border border-top-0 rounded-bottom py-3">
+
+            <div class="col-8">
+                <div class="p-3">
+                    <h3>
+                        Productos
+                    </h3>
+                    <div class="">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col"></th>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Precio</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="productTable">
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-4">
+
+                <div class="card p-3 mt-4">
+                    <h4 id="form-title">Nuevo Producto</h4>
+                    <form class="mt-2">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="name" name="name"
+                                placeholder="Nombre del elemento">
+                            <label for="name">Nombre</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="description" name="description"
+                                placeholder="Descripcion">
+                            <label for="description">Descripcion</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="price" name="price"
+                                placeholder="Precio del elemento">
+                            <label for="price">Precio</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="number" class="form-control" id="stock" name="stock" placeholder="Stock">
+                            <label for="price">Cantidad en inventario</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="thumbnail" name="thumbnail"
+                                placeholder="Url de la foto">
+                            <label for="thumbnail">Foto</label>
+                        </div>
+                        <div id="form-button">
+                            <button type="button" class="btn btn-dark mt-3" onclick="createNew()">Crear nuevo
+                                producto</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+        <footer class="position-absolute bottom-0 p-3">
+            Web creada por RecRoger - 05/2022
+        </footer>
+    </div>
+    <script src="https://kit.fontawesome.com/74f86e9c4a.js" crossorigin="anonymous"></script>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js'
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='./products.js'></script>
+</body>
+
+</html>

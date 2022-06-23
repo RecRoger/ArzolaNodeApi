@@ -4,10 +4,10 @@ export class FileManager {
     constructor(fileName, defaultContent) {
         this.fileName = fileName;
         try {
-            fs.readFileSync(`./${this.fileName}.txt`, 'utf-8');
+            fs.readFileSync(`./db/${this.fileName}.txt`, 'utf-8');
             console.log(`>> El archivo ${this.fileName}.txt ya existe`);
         } catch (err) {
-            fs.writeFileSync(`./${this.fileName}.txt`, JSON.stringify(defaultContent) || '');
+            fs.writeFileSync(`./db/${this.fileName}.txt`, JSON.stringify(defaultContent) || '');
             console.log(`>> El archivo ${this.fileName}.txt fue creado correctamente`);
         }
     }
@@ -15,10 +15,10 @@ export class FileManager {
     async save(obj) {
         try {
             const data = await this.getAll();
-            let id = data.length ? Number(data[data.length - 1].id) : 1;
+            let id = data.length ? Number(data[data.length - 1].id) : 0;
             id++;
             data.push({id: id, ...obj});
-            await fs.promises.writeFile(`./${this.fileName}.txt`, JSON.stringify(data))
+            await fs.promises.writeFile(`./db/${this.fileName}.txt`, JSON.stringify(data))
             console.log('> Nuevo elemento creado con el id ', id);
             return {id: id, ...obj}
         } catch (err) {
@@ -29,7 +29,7 @@ export class FileManager {
 
     async getAll() {
         try {
-            const file = await fs.promises.readFile(`./${this.fileName}.txt`, 'utf-8');
+            const file = await fs.promises.readFile(`./db/${this.fileName}.txt`, 'utf-8');
             const data = JSON.parse(file);
             return data;
         }catch (err) {
@@ -68,7 +68,7 @@ export class FileManager {
                 if(key != 'id')
                 product[key] = obj[key]
             }
-            await fs.promises.writeFile(`./${this.fileName}.txt`, JSON.stringify(products))
+            await fs.promises.writeFile(`./db/${this.fileName}.txt`, JSON.stringify(products))
             return product;
         }catch (err) {
             console.log('> No se ha podido leer el archivo', err);
@@ -85,17 +85,19 @@ export class FileManager {
             const data = await this.getAll();
             const newData = data.filter(obj => obj.id !== id);
             console.log('> Eliminamos el elemento de id ', id);
-            await fs.writeFileSync(`./${this.fileName}.txt`, JSON.stringify(newData));
+            await fs.writeFileSync(`./db/${this.fileName}.txt`, JSON.stringify(newData));
             console.log('> Elemento eliminado');
+            return true
         }catch (err) {
             console.log('> No se ha podido eliminar el elemento', err);
+            return false
         }
     }
     
     async deleteAll() {
         try {
             console.log('> Vaciamos la lista');
-            await fs.writeFileSync(`./${this.fileName}.txt`, '[]');
+            await fs.writeFileSync(`./db/${this.fileName}.txt`, '[]');
             console.log(`> Datos en el archivo ${this.fileName}.txt borrados exitosamente`);
         } catch (err) {
             console.log(`> No se ha podido eliminar el contenido del archivo ${this.fileName}.txt`);

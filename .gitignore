@@ -1,4 +1,5 @@
 node_modules/
 build/
-products.txt
-chat.txt
+db/products.txt
+db/chat.txt
+db/cart.txt

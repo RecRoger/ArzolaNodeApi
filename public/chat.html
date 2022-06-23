@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Rogr NodeJs</title>
+</head>
+
+<body>
+    <div class="container mt-4">
+
+        <h1>
+            Bienvenido
+        </h1>
+        <p>
+            Hola, soy Rogr y por aca podrás probar mi nueva aplicacion de Node, espero la disfrutes.
+        </p>
+
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="./chat">Ver Chat</a>
+                </li>
+                <li class="nav-item ms-auto">
+                    <a class="nav-link" href="./products">Editar Productos</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row border border-top-0 rounded-bottom">
+            <div class="col-3">
+                <div class="p-3 h-100 border-end">
+                    <b class="mb-2">Usuarios conectados</b>
+                    <ul id="usersContainer" class="list-group list-group-flush">
+
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-9 pt-4" style="height: 650px;">
+                <div class="card-body h-100 d-flex flex-column">
+                    <div id="messagesContainer" class="h-100 d-flex flex-column overflow-auto pb-4 pe-2">
+
+                    </div>
+
+                    <form id="form" class="mt-auto" action="">
+                        <div class="input-group mb-4">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Nombre"
+                                style="max-width: 150px">
+                            <input type="text" class="form-control" id="message" name="message" placeholder="Mensaje">
+                            <button type="submit" class="btn btn-dark ms-auto">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <footer class="position-absolute bottom-0 p-3">
+            Web creada por RecRoger - 05/2022
+        </footer>
+    </div>
+
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js'
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const formElement = document.getElementById('form')
+        const usernameInput = document.getElementById('username')
+        const messageInput = document.getElementById('message')
+        const containerElement = document.getElementById('messagesContainer')
+        const usersElement = document.getElementById('usersContainer')
+
+        const messageTemplate = (chatMessage) => {
+            let date = (new Date(chatMessage.date)).toLocaleString()
+            if (date.includes((new Date()).toLocaleDateString())) {
+                date = date.split(', ')[1]
+            }
+            return `
+            <div class="chatMessage d-flex w-100 mb-2 w-75">
+                <div class="card p-3 ${chatMessage.user === usernameInput.value ? 'ms-auto bg-light' : 'me-auto'}">
+                    <b class="me-5">${chatMessage.user}</b>
+                    <div>
+                        ${chatMessage.message}
+                    </div>
+                    <div class="text-black-50 ms-auto">${date}</div>
+                </div>
+            </div>`
+        }
+
+
+        socket.on('set old messages', function (chat) {
+            let template = '';
+            chat.forEach(chatMessage => {
+                template += messageTemplate(chatMessage)
+            })
+            containerElement.innerHTML = template
+            scrollToBottom()
+        });
+
+        socket.on('set users', function (users) {
+            console.log('los users: ', users)
+            usersElement.innerHTML = users.map(usr => `
+                <li class="list-group-item ${usr === usernameInput.value ? 'bg-light' : ''}">${usr}</li>
+            `).join('')
+        });
+
+        socket.on('set message', function (msg) {
+            let template = messageTemplate(msg)
+            containerElement.innerHTML += template
+            scrollToBottom()
+        });
+
+        socket.on('user enter', function (user) {
+            containerElement.innerHTML += `
+            <div class="w-100 p-4 text-center">
+                --- ${user} ha entrado en la sala ---
+            </div>
+            `
+            scrollToBottom()
+        });
+        socket.on('user leave', function (user) {
+            containerElement.innerHTML += `
+            <div class="w-100 p-4 text-center">
+                --- <b>${user}</b> ha abandonado la sala ---
+            </div>
+            `
+            scrollToBottom()
+        });
+
+        formElement.addEventListener('submit', (e) => send(e))
+
+        function send(e) {
+            e.preventDefault();
+            const username = usernameInput.value;
+            const message = messageInput.value;
+
+            if (username && message) {
+                socket.emit('incoming message', { username, message });
+                usernameInput.setAttribute('readonly', true)
+                messageInput.value = ""
+            }
+        }
+
+        function scrollToBottom() {
+            containerElement.scrollTop = containerElement.scrollHeight
+        }
+
+    </script>
+</body>
+
+</html>
