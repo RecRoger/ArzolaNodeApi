@@ -1,96 +1,19 @@
 import { Router } from 'express'
-import { FileManager } from "../db/fileManager.js";
-import { productFile } from "./products.routes.js";
+import { CreateCart,
+    GetCart,
+    AddToCart,
+    RemoveFromCar,
+    FlushCart } from "../controllers/cart.controller.js";
 
-
-export class CartData {
-    constructor(name, description, price, stock, thumbnail) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.stock = stock;
-        this.thumbnail = thumbnail;
-        this.timestamp = new Date()
-    }
-}
-
-export const cartFile = new FileManager('carts', []);
 export const cartRouter = Router()
 
 
-cartRouter.post('/', async (req, res) => {
-    console.log('> Crea nuevo carrito')
-    const id = req.body?.id
-    const product = await productFile.getById(id)
-    console.log('> Añadir elemento', product)
-    const data = {
-        timestamp: Date.now(),
-        products: [product]
-    }
-    let newCart = await cartFile.save(data);
+cartRouter.post('/', CreateCart)
 
-    return res.status(200).json((newCart && {id: newCart.id, timestamp: newCart.timestamp}) || {error: "No cart"})
-})
+cartRouter.get('/:id', GetCart)
 
-cartRouter.get('/:id', async (req, res) => {
-    const id = Number(req.params.id)
-    console.log('> Consultar elemento carrito ', id)
-    let item = await cartFile.getById(id);
-    return res.status(200).json((item && item.products) || [])
-})
+cartRouter.post('/:id/products', AddToCart)
 
-cartRouter.post('/:id/products', async (req, res) => {
-    const id = Number(req.params.id)
-    const productId = req.body?.id
-    if(!id || !productId) {
-        console.log('> ids invalidos')
-        return res.status(400).json({error:'invalid Ids'})
-    }
-    console.log('> Añadir product ', productId,' al cart ', id)
-    const cart = await cartFile.getById(id)
-    const product = await productFile.getById(productId)
+cartRouter.delete('/:id/products/:productId',  RemoveFromCar)
 
-    if(!cart?.products?.length || !product?.id) {
-        console.log('> No hay productos')
-        return res.status(404).json({error:'no products'})
-    }
-
-    cart.products.push(product)
-    
-    let edition = await cartFile.update(id, cart);
-
-    return res.status(200).json((edition && {id}) || {error: 'no data'} )
-})
-
-cartRouter.delete('/:id/products/:productId', async (req, res) => {
-    const id = Number(req.params.id)
-    const productId =Number(req.params.productId)
-    if(!id || !productId) {
-        console.log('> ids invalidos')
-        return res.status(400).json({error:'invalid Ids'})
-    }
-    const cart = await cartFile.getById(id)
-    
-    if(!cart?.products?.length) {
-        console.log('> No cart')
-        return res.status(404).json({error:'no cart'})
-    }
-
-    cart.products = cart.products.filter(product=> product.id !== productId)
-
-    if(!cart.products.length) {
-        console.log('> Vaciar carrito ', id)
-        let edition = await cartFile.deleteById(id);
-        return res.status(200).json((edition && {id, msg: 'Deleted'}) || {'error': 'no delete'})
-    }
-
-    let edition = await cartFile.update(id, cart);
-    return res.status(200).json((edition && {id}) || {error: 'no data'} )
-})
-
-cartRouter.delete('/:id', async (req, res) => {
-    const id = Number(req.params.id)
-    console.log('> Vaciar carrito ', id)
-    let edition = await cartFile.deleteById(id);
-    return res.status(200).json((edition && {id, msg: 'Deleted'}) || {'error': 'no delete'})
-})
+cartRouter.delete('/:id', FlushCart)
