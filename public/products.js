@@ -21,10 +21,10 @@ async function getAllProducts() {
     if(productList.length) {
         tableElement.innerHTML = ''
         let tableTemplate = ''
-        productList.forEach(item => {
+        productList.forEach((item, index) => {
             tableTemplate += `
             <tr>
-                <th scope="row">${item.id}</th>
+                <th scope="row">${index + 1}</th>
                 <td>
                     <img src="${item.thumbnail}" style="height: 50px; width: 50px" class="img-thumbnail">
                 </td>
@@ -92,7 +92,7 @@ async function createNew() {
 
 function deleteElement(id) {
     
-    const product = productList.find(item=> item.id === id)
+    const product = productList.find(item=> item.id == id)
     Swal.fire({
         title: 'Seguro que deseas eliminar ' + product.name,
         showCancelButton: true,

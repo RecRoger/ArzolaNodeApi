@@ -19,10 +19,10 @@ async function getAllProducts() {
     if(productList.length) {
         tableElement.innerHTML = ''
         let tableTemplate = ''
-        productList.forEach(item => {
+        productList.forEach((item, index) => {
             tableTemplate += `
             <tr>
-                <th scope="row">${item.id}</th>
+                <th scope="row">${index + 1}</th>
                 <td>
                     <img src="${item.thumbnail}" style="height: 50px; width: 50px" class="img-thumbnail">
                 </td>
@@ -121,6 +121,10 @@ async function addToCart(id) {
             timer: 3000
         });
     } else {
+        if(!document.getElementsByClassName('cart-item').length) {
+            localStorage.removeItem('cartId');
+            cartId = null
+        }
         Swal.fire({
             position: 'top-end',
             title: 'Error!',
@@ -134,7 +138,7 @@ async function addToCart(id) {
 
 function displayCartItem(data) {
     let cartList = cartElement.innerHTML;
-    cartList += `<li class="list-group-item">${data.name} <i class="float-end fa fa-trash text-danger ms-4" onclick="removeFromCart(${data.id})"></i></li>`
+    cartList += `<li class="cart-item list-group-item">${data.name} <i class="float-end fa fa-trash text-danger ms-4" onclick="removeFromCart(${data.id})"></i></li>`
     cartElement.innerHTML = cartList
 }
 

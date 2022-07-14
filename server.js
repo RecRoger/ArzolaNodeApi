@@ -7,6 +7,8 @@ import { startIO } from './routes/chat.io.js';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+import mongoose from 'mongoose'
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -40,19 +42,23 @@ app.use('/*', (req, res)=> {
 })
 
 
-// app.engine('handlebars', engine())
-// app.set('view engine', 'handlebars');
-// app.set('views', './views');
-// app.get('/', async (req, res) => {
-//     console.log('> Consultar todos los elemento')
-//     let items = await productFile.getAll();
-//     return res.render('products', { products: items })
-// })
+async function conectToDb() {
+    let dbuser = 'MongoNodeApp'
+    let dbpass = 'Coderhouse'
+    let dbCS = `mongodb+srv://${dbuser}:${dbpass}@coderhousenodecluster.gabnc.mongodb.net/Coderhouse?retryWrites=true&w=majority`
 
-// app.get('/chat', async (req, res) => {
-//     return res.render('chat')
-// })
+    try {
+        await mongoose.connect(dbCS)
+        console.log('> db conected succesfully!')
+    } catch (e) {
+        throw e
+    }
+
+}
+
+
 
 server.listen(PORT, () => {
+    conectToDb()
     console.log(`>> Server running on PORT: ${PORT}`)
 });

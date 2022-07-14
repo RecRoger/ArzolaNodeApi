@@ -1,7 +1,8 @@
 import { Router } from 'express'
 import { FileManager } from "../db/fileManager.js";
-import { productFile } from "../controllers/products.controller.js";
+// import { productFile } from "../controllers/products.controller.js";
 
+export const productFile = new FileManager('products', []);
 
 export class CartData {
     constructor(name, description, price, stock, thumbnail) {
