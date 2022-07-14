@@ -60,6 +60,10 @@ async function showDetail(id) {
             showCancelButton: false,
             confirmButtonText:
               'Añadir al Carrito',
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                addToCart(id)
+            }
         })
     }
 }
@@ -79,7 +83,7 @@ async function getAllCart(){
 }
 
 async function addToCart(id) {
-    const product = productList.find(item=> item.id === id)
+    const product = productList.find(item=> item.id == id)
     if(!cartId) {
         const response = await fetch('/api/cart',{
             method: 'POST',
@@ -143,7 +147,7 @@ function displayCartItem(data) {
 }
 
 function removeFromCart(productId) {
-    const product = productList.find(item=> item.id === productId)
+    const product = productList.find(item=> item.id == productId)
 
     Swal.fire({
         title: 'Seguro que deseas eliminar '+product.name+' de lista de compras?',
