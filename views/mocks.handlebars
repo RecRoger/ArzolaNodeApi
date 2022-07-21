@@ -1,0 +1,67 @@
+<div class="d-flex align-items-center">
+    <h5>Nuestros productos</h5>
+    <form class="ms-auto m-2 d-flex justify-center" id="updateForm">
+        <div class="form-floating me-2">
+            <input type="number" class="form-control" id="count" name="count" placeholder="Cantidad de Productos"
+                value="{{count}}">
+            <label for="count">Cantidad de Productos</label>
+        </div>
+        <button type="button" class="btn btn-dark" onclick="createMocks()">Crear Mocks</button>
+    </form>
+
+    <script>
+
+        function createMocks() {
+            const count = document.getElementById('count').value
+            window.location.href = '/mocks?count=' + count;
+        }
+
+    </script>
+</div>
+
+<script>
+
+</script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">_id</th>
+            <th scope="col">id</th>
+            <th scope="col">name</th>
+            <th scope="col">description</th>
+            <th scope="col">price</th>
+            <th scope="col">stock</th>
+            <th scope="col">thumbnail</th>
+            <th scope="col">timestamp</th>
+            <th scope="col">_v</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each products}}
+        <tr>
+            <th scope="row">{{@index}}</th>
+            <td>
+                <span class="d-inline-block text-truncate" style="max-width: 150px;">
+                    {{this._id}}
+                </span>
+            </td>
+            <td>{{this.id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.description}}</td>
+            <td>{{this.price}}$</td>
+            <td>{{this.stock}}</td>
+            <td>
+                <span class="d-inline-block text-truncate" style="max-width: 200px;">
+                    {{this.thumbnail}}
+                </span>
+                <br>
+                <img src="{{this.thumbnail}}" style="height: 50px; width: 50px" class="img-thumbnail">
+            </td>
+            <td>{{this.timestamp}}</td>
+            <td>{{this._v}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
