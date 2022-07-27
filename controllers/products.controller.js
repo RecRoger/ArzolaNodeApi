@@ -114,7 +114,7 @@ export const DeleteProduct = async (req, res) => {
 }
 export const CreateProduct =  async (req, res) => {
     const data = req.body
-    console.log('> Añadir elemento', data)
+    console.log('> Añadir elemento', data.name)
     
     if(!data?.name) {
         return res.status(400).json({error: "No Item"})

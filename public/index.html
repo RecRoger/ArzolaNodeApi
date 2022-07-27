@@ -11,10 +11,26 @@
 </head>
 
 <body>
-    <div class="container pt-4 min-vh-100 d-flex flex-column">
-        <h1>
+    <div class="container pt-4 min-vh-100 d-flex flex-column position-relative">
+        <h1 id="welcome-title">
             Bienvenido
         </h1>
+        <div class="position-absolute end-0 w-25 text-end">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="userDropdown"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user"></i>
+            </button>
+            <div class="dropdown-menu p-3 text-center" aria-labelledby="userDropdown">
+                <div id="usrSession">
+                    <h5>No se iniciado sesion</h5>
+                </div>
+                <div id="usrBtns">
+                    <a href="/login">
+                        <button class="btn btn-primary">Iniciar sesion / Registrarse</button>
+                    </a>
+                </div>
+            </div>
+        </div>
         <p>
             Hola, soy Rogr y por aca podrás probar mi nueva aplicacion de Node, espero la disfrutes.
         </p>
@@ -82,6 +98,7 @@
         crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/74f86e9c4a.js" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='./sessions.js'></script>
     <script src='./main.js'></script>
 </body>
 

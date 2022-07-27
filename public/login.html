@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Rogr NodeJs</title>
+</head>
+
+<body>
+    <div class="container pt-4 min-vh-100 d-flex flex-column">
+        <h1 id="welcome-title">
+            Bienvenido
+        </h1>
+        <p>
+            Hola, soy Rogr y por aca podrás probar mi nueva aplicacion de Node, espero la disfrutes.
+        </p>
+
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./chat">Ver Chat</a>
+                </li>
+            </ul>
+        </div>
+        <div class="row border border-top-0 rounded-bottom py-3">
+
+            <div class="col-8 mx-auto p-3">
+                <div class="card card-body">
+                    <h5>Iniciar sesion</h5>
+                    <form class="mt-3 text-end">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="loginUsername" name="loginUsername"
+                                placeholder="Nombre de usuario">
+                            <label for="loginUsername">Usuario</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="loginPassword" name="loginPassword"
+                                placeholder="Descripcion">
+                            <label for="loginPassword">Contraseña</label>
+                        </div>
+                        <button type="button" class="btn btn-dark mt-3" onclick="login()">
+                            Iniciar sesion
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <!-- <div class="col-6 p-3">
+                <div class="card card-body">
+                    <h5>Registrarse</h5>
+                    <form class="mt-3 text-end">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="signName" name="signName" placeholder="Nombre">
+                            <label for="signName">Nombre</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="signMail" name="signMail" placeholder="Correo">
+                            <label for="signMail">Correo</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="signUsername" name="signUsername"
+                                placeholder="Nombre del elemento">
+                            <label for="signUsername">Usuario</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="signPassword" name="signPassword"
+                                placeholder="Descripcion">
+                            <label for="signPassword">Contraseña</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                placeholder="Descripcion">
+                            <label for="confirmPassword">Confirma Contraseña</label>
+                        </div>
+                        <button type="button" class="btn btn-dark mt-3" onclick="signin()">
+                            Registrarse
+                        </button>
+                    </form>
+                </div>
+
+            </div> -->
+
+        </div>
+
+        <footer class="mt-auto p-3">
+            Web creada por RecRoger - 05/2022
+        </footer>
+    </div>
+    <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js'
+        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+        crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/74f86e9c4a.js" crossorigin="anonymous"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='./sessions.js'></script>
+</body>
+
+</html>

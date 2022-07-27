@@ -32,7 +32,7 @@ export const CreateCart = async (req, res) => {
         if(!product) {
             return res.status(404).json({error: "Invalid Product"})
         }
-        console.log('> Añadir elemento', product.name)
+        console.log('> - Añadir elemento', product.name, ' al nuevo cart')
         const data = {
             id: Date.now().toString(),
             timestamp: new Date(),
@@ -51,6 +51,7 @@ export const CreateCart = async (req, res) => {
 }
 
 export const AddToCart = async (req, res) => {
+    console.log('> Añadir producto a carrito')
     const id = req.params.id
     const productId = req.body?.id
     
@@ -59,7 +60,7 @@ export const AddToCart = async (req, res) => {
             console.log('> ids invalidos')
             return res.status(400).json({error:'invalid Ids'})
         }
-        console.log('> Añadir product ', productId,' al cart ', id)
+        console.log('> - Añadir product ', productId,' al cart ', id)
         
         let products = await productsCollection.find({id: productId}, { 
             _v: 0,
@@ -90,7 +91,7 @@ export const AddToCart = async (req, res) => {
 
 export const GetCart = async (req, res) => {
     const id = req.params.id
-    console.log('> Consultar elemento carrito ', id)
+    console.log('> Consultar carrito ', id)
     try {
         // let item = await cartFile.getById(id);
         const items = await cartsCollection.find({id}, {
@@ -111,6 +112,7 @@ export const GetCart = async (req, res) => {
 export const RemoveFromCar = async (req, res) => {
     const id = req.params.id
     const productId = req.params.productId
+    console.log('> Eliminar producto', product ,' del carrito', id)
     if(!id || !productId) {
         console.log('> ids invalidos')
         return res.status(400).json({error:'invalid Ids'})
