@@ -75,11 +75,8 @@ app.use('/*', (req, res)=> {
 })
 
 
-
-
-
 // port server listening
-server.listen(PORT, () => {
-    conectToDb()
+server.listen(PORT, async () => {
+    await conectToDb()
     console.log(`>> Server running on PORT: ${PORT}`)
 });

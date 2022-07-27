@@ -52,7 +52,7 @@ export const GetAllProducts = async (req, res) => {
 
 
     } catch (e){
-        return res.status(400).json({msg: 'ERROR', error: e})
+        return res.status(500).json({msg: 'ERROR', error: e})
         // throw e
     }
 }
@@ -67,7 +67,7 @@ export const GetOneProduct =  async (req, res) => {
         return res.status(200).json(items[0])
 
     } catch (e) {
-        return res.status(200).json({error: "No Item", e})
+        return res.status(404).json({error: "No Item", e})
     }
 
     // let item = await productFile.getById(id);
@@ -89,10 +89,10 @@ export const UpdateProduct = async (req, res) => {
             });
             return res.status(200).json(items[0])
         }
-        return res.status(200).json({error: "No Item"})
+        return res.status(404).json({error: "No Item"})
 
     } catch (e) {
-        return res.status(200).json({error: "No Item", e})
+        return res.status(404).json({error: "No Item", e})
     }
 
 
