@@ -8,10 +8,11 @@ import http  from 'http';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { dbCS, conectToDb } from './db/db.js'
-import { sessionRouter } from './routes/session.routes.js'
+import { usersRouter } from './routes/users.routes.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
+import passport from 'passport'
 
 import { logedIn } from './middlewares/auth.js'
 
@@ -23,12 +24,6 @@ const app = express();
 const PORT = 8080;
 const server = http.createServer(app);
 startIO(server)
-
-// api middlewares
-app.use(express.json())
-app.use(express.urlencoded({extended: true}))
-app.use(express.static(__dirname + '/public'))
-
 
 // Manejo de sesion
 app.use(cookieParser());
@@ -46,7 +41,13 @@ app.use(session({
         maxAge: 60000
     }
 }))
+app.use(passport.initialize())
+app.use(passport.session())
 
+// api middlewares
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(express.static(__dirname + '/public'))
 
 // public views routes
 app.get('/',  (req, res) => { res.sendFile('/index.html') })
@@ -65,7 +66,7 @@ app.get('/mocks', mocksRouter)
 // api routes
 app.use('/api/products', productsRouter)
 app.use('/api/cart', cartRouter)
-app.use('/api/session', sessionRouter)
+app.use('/api/users', usersRouter)
 app.use('/api/*',(req, res)=> {
     res.status(404).json({ error : -1, descripcion: 'ruta invalida' })
 })

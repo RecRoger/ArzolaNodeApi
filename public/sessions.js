@@ -49,25 +49,36 @@ async function login() {
     const username = document.getElementById('loginUsername').value
     const password = document.getElementById('loginPassword').value
 
-    const response = await fetch('/api/session/login',{
-        method: 'POST',
-        body: JSON.stringify({
-            username,
-            password,
-        }),
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-        },
-    })
-    session = await response.json();
-    if(session?.login) {
-        window.location.href = '/'
+    if(username && password) {
+        const response = await fetch('/api/users/login',{
+            method: 'POST',
+            body: JSON.stringify({
+                username,
+                password,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        session = await response.json();
+        if(session?.login) {
+            window.location.href = '/'
+        } else if (session?.message == "No user") {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Usuario inexistente',
+                text: 'El usuario no existe, sé bienvenido a registrarte',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
     }
 }
 
 async function logout() {
     const name = getSessionCookie();
-    const response = await fetch('/api/session/logout',{
+    const response = await fetch('/api/users/logout',{
         method: 'POST',
     })
     session = await response.json();
@@ -84,7 +95,58 @@ async function logout() {
     }
 }
 
-function signin() {
-    alert('signin')
+async function signin() {
+    const name = document.getElementById('signName').value
+    const email = document.getElementById('signMail').value
+    const username = document.getElementById('signUsername').value
+    const password = document.getElementById('signPassword').value
+    const confirmPassword = document.getElementById('confirmPassword').value
+
+    if(name && email && username && password && confirmPassword) {
+
+        if(password !== confirmPassword) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'Las contraseñas no son iguales',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return null
+        }
+        const response = await fetch('/api/users/signup',{
+            method: 'POST',
+            body: JSON.stringify({
+                name,
+                email,
+                username,
+                password,
+            }),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        signup = await response.json();
+        
+        if(signup?.signin) {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: 'Usuario Creado',
+                text: 'Usuario creado exitosamente. Inicia sesion para disfrutar de la aplicación',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        } else {
+            Swal.fire({
+                position: 'top-end',
+                icon: 'error',
+                title: 'No se ha podido crear el usuario',
+                showConfirmButton: false,
+                timer: 3000
+            });
+        }
+    }
+
 }
 
