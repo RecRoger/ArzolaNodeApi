@@ -50,25 +50,38 @@ async function login() {
     const password = document.getElementById('loginPassword').value
 
     if(username && password) {
-        const response = await fetch('/api/users/login',{
-            method: 'POST',
-            body: JSON.stringify({
-                username,
-                password,
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-        session = await response.json();
-        if(session?.login) {
-            window.location.href = '/'
-        } else if (session?.message == "No user") {
+
+        try {
+            const response = await fetch('/api/users/login',{
+                method: 'POST',
+                body: JSON.stringify({
+                    username,
+                    password,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+            session = await response.json();
+            if(session?.login) {
+                window.location.href = '/'
+            } else if (session?.message == "No user") {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Usuario inexistente',
+                    text: 'El usuario no existe, sé bienvenido a registrarte',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        } catch(e) {
+            console.error('>>>> El error', e)
             Swal.fire({
                 position: 'top-end',
                 icon: 'error',
-                title: 'Usuario inexistente',
-                text: 'El usuario no existe, sé bienvenido a registrarte',
+                title: 'Ha ocurrido un error',
+                text: 'Probablemente las credenciales no sean las correctas',
                 showConfirmButton: false,
                 timer: 3000
             });
@@ -104,40 +117,51 @@ async function signin() {
 
     if(name && email && username && password && confirmPassword) {
 
-        if(password !== confirmPassword) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'error',
-                title: 'Las contraseñas no son iguales',
-                showConfirmButton: false,
-                timer: 3000
-            });
-            return null
-        }
-        const response = await fetch('/api/users/signup',{
-            method: 'POST',
-            body: JSON.stringify({
-                name,
-                email,
-                username,
-                password,
-            }),
-            headers: {
-                'Content-type': 'application/json; charset=UTF-8',
-            },
-        })
-        signup = await response.json();
-        
-        if(signup?.signin) {
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Usuario Creado',
-                text: 'Usuario creado exitosamente. Inicia sesion para disfrutar de la aplicación',
-                showConfirmButton: false,
-                timer: 3000
-            });
-        } else {
+        try {
+            if(password !== confirmPassword) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Las contraseñas no son iguales',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+                return null
+            }
+            const response = await fetch('/api/users/signup',{
+                method: 'POST',
+                body: JSON.stringify({
+                    name,
+                    email,
+                    username,
+                    password,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+            signup = await response.json();
+            
+            if(signup?.signin) {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'Usuario Creado',
+                    text: 'Usuario creado exitosamente. Inicia sesion para disfrutar de la aplicación',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            } else {
+                Swal.fire({
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'No se ha podido crear el usuario',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            }
+        } catch(e) {
+            console.error('>>>> El error', e)
             Swal.fire({
                 position: 'top-end',
                 icon: 'error',

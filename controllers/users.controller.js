@@ -20,14 +20,15 @@ export const registerUser = async (user) => {
     console.log('> Registrando usuario ', email, username)
     try {
         let newUser = await usersCollection.insertMany([{...user, signUpDate: new Date()}]);
-        return newUser
+        return newUser[0]
     } catch(e) {
         console.log('> ERROR', e)
         return null
     }
 }
 
-export const login =  async (req, res) => {
+// Autenticacion a Mano, ya no se usa
+/* export const login =  async (req, res) => {
     const {username, password} = req.body
     console.log('> Login de usuario ', username)
     let tiempo = parseInt(req.query.tiempo) || 60000;
@@ -46,16 +47,19 @@ export const login =  async (req, res) => {
         return res.status(400).json({login: false, message: "No session", error: e})
     }
     
-}
+} */
 export const passportAfterLogin = async (req, res) => {
     try {
         let tiempo = parseInt(req.query.tiempo) || 60000;
-        return res.status(200).cookie('chSession', req.body.name, {maxAge: tiempo}).json({login: true})
+        const user = req.session.passport.user
+        return res.status(200).cookie('chSession', user.name, {maxAge: tiempo}).json({login: true})
     } catch(e) {
         return res.status(400).json({login: false, message: "No session", error: e})
     }
 }
-export const signUp =  async (req, res) => {
+
+// Registro a Mano, ya no se usa
+/* export const signUp =  async (req, res) => {
     const data = req.body
     console.log('> registro de usuario', data.username)
     
@@ -73,10 +77,10 @@ export const signUp =  async (req, res) => {
     } catch (err) {
         return res.status(404).json({'error': err})
     }
-}
+} */
 export const passportAfterSignup = async (req, res) => {
     try {
-        const user = await getUser(req.body.username)
+        // const user = await getUser(req.body.username)
         console.log('> signUp exitoso')
         return res.status(200).json({signin: true})
     } catch(e) {
@@ -85,13 +89,18 @@ export const passportAfterSignup = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-    console.log('> Logout de usuario ', req.session.username)
-
-    try {
+    console.log('> Logout de usuario ', req?.session?.passport?.user?.username)
+    // Eliminacion Manual de la session
+    /* try {
+        console.log('> Logout de usuario ', req.session.username)
         req.session.destroy()
         return res.clearCookie('chSession').status(200).json({login: false})
-
+        
     } catch (e) {
         return res.status(400).json({login: true, message: "No session", error: e})
-    }
+    } */
+    req.session.destroy( e => {
+        if(e) return res.status(400).json({login: true, message: "No session", error: e});
+        return res.clearCookie('chSession').status(200).json({login: false})
+    })
 }

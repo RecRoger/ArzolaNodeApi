@@ -28,12 +28,13 @@ startIO(server)
 // Manejo de sesion
 app.use(cookieParser());
 app.use(session({
-    store: mongoStore.create({
-        mongoUrl: dbCS,
-        mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
-        ttl: 60,
-        collectionName: 'sessions'
-    }),
+    // Manejo de sesion con MongoDb Manualmente
+    // store: mongoStore.create({
+    //     mongoUrl: dbCS,
+    //     mongoOptions: {useNewUrlParser: true, useUnifiedTopology: true},
+    //     ttl: 60,
+    //     collectionName: 'sessions'
+    // }),
     secret: 'sessionSecretKey',
     resave: true,
     saveUninitialized: true,

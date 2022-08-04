@@ -3,11 +3,16 @@ import LocalStrategy from 'passport-local'
 import { getUser, registerUser } from '../controllers/users.controller.js'
 
 export const logedIn = (req, res, next) => {
-    if(req.session?.username) {
-        next();
-    } else {
-        res.redirect('/login');
-    }
+    // Validacion Manual, ya no se usa
+    // if(req.session?.username) {
+    //     next();
+    // } else {
+    //     res.redirect('/login');
+    // }
+
+    if(req.isAuthenticated() ) return next();
+    res.redirect('/login');
+
 }
 
 
@@ -17,7 +22,7 @@ passport.use('logIn', new LocalStrategy({
     }, async function(req, pusername, ppassword, next) {
         const {username, password} = req.body
         let user = await getUser(username);
-        if(user && user.username === username && user.password === password) {
+        if(user && (user.username === username || user.email === username) && user.password === password) {
             return next(null, user);
         } else {
             return next(null, false)

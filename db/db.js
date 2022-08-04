@@ -9,7 +9,7 @@ export async function conectToDb() {
 
     try {
         await mongoose.connect(dbCS)
-        console.log('> db conected succesfully!')
+        console.log('>> DB conected succesfully!')
     } catch (e) {
         throw e
     }
