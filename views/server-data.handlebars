@@ -1,0 +1,46 @@
+<div class="d-flex align-items-center">
+    <h5>Datos del Servidor</h5>
+</div>
+<table class="table table-striped table-borderless">
+    <tbody>
+        <tr>
+            <td>Palatoform (OS):</td>
+            <td>{{data.platform}}</td>
+        </tr>
+        <tr>
+            <td>Version de Node:</td>
+            <td>{{data.node_version}}</td>
+        </tr>
+        <tr>
+            <td>Ejecutable de Node:</td>
+            <td>{{data.node}}</td>
+        </tr>
+        <tr>
+            <td>Memoria:</td>
+            <td>{{data.memory}}</td>
+        </tr>
+        <tr>
+            <td>Argumentos Adicionales:</td>
+            <td>
+                <ul class="list-group list-group-flush">
+                    {{#each data.arguments}}
+                    <li class="list-group-item list-group-item-secondary">{{this}}</li>
+                    {{/each}}
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>Directorio ubicación:</td>
+            <td>{{data.directory}}</td>
+        </tr>
+        <tr>
+            <td>Archivo ejecutable:</td>
+            <td>{{data.exeFile}}</td>
+        </tr>
+        <tr>
+            <td>PID:</td>
+            <td>{{data.pid}}</td>
+        </tr>
+
+    </tbody>
+</table>

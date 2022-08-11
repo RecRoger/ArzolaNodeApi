@@ -1,4 +1,5 @@
 import express from 'express'
+import 'dotenv/config'
 import { startIO } from './routes/chat.io.js';
 import { engine } from 'express-handlebars'
 import { productsRouter } from './routes/products.routes.js'
@@ -15,13 +16,14 @@ import mongoStore from 'connect-mongo'
 import passport from 'passport'
 
 import { logedIn } from './middlewares/auth.js'
+import { getServerData } from './controllers/server-data.controller.js'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // server inicialization
 const app = express();
-const PORT = 8080;
+const PORT = 8050;
 const server = http.createServer(app);
 startIO(server)
 
@@ -35,7 +37,7 @@ app.use(session({
     //     ttl: 60,
     //     collectionName: 'sessions'
     // }),
-    secret: 'sessionSecretKey',
+    secret: process.env.SESSION_SECRET_KEY,
     resave: true,
     saveUninitialized: true,
     cookie: {
@@ -62,6 +64,7 @@ app.engine('handlebars', engine())
 app.set('view engine', 'handlebars');
 app.set('views', './views');
 app.get('/mocks', mocksRouter)
+app.get('/info', getServerData)
 
 
 // api routes
