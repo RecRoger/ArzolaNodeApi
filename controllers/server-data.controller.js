@@ -12,9 +12,6 @@ export const getServerData = async (req, res) => {
     let ejec = args.shift().split("\\");
     file = ejec[ejec.length - 1];
   }
-
-
-  // console.log('ejec', ejec)
   
   const datos = {
     platform: process.platform,
@@ -26,7 +23,6 @@ export const getServerData = async (req, res) => {
     directory: process.cwd(),
     pid: process.pid
   }
-  // console.log( 'datos', datos);
 
   return res.render('server-data', { data: datos })
 
