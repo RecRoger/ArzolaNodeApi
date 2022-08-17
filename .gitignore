@@ -3,4 +3,4 @@ build/
 db/products.txt
 db/chat.txt
 db/carts.txt
-.env2
+.env
