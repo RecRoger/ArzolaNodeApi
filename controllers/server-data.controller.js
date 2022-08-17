@@ -1,5 +1,9 @@
+import os from 'os'
+const numCpus = os?.cpus()?.length
+
 export const getServerData = async (req, res) => {
   console.log('> Getting server data')
+  console.log("numCpus: ", numCpus);
 
   let args = [...process.argv]
   
@@ -21,7 +25,8 @@ export const getServerData = async (req, res) => {
     arguments: args,
     exeFile: file,
     directory: process.cwd(),
-    pid: process.pid
+    pid: process.pid,
+    numCpus: numCpus
   }
 
   return res.render('server-data', { data: datos })

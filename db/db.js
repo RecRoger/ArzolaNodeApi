@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import 'dotenv/config'
 
 const dbuser = process.env.DB_SECRET_USER
 const dbpass = process.env.DB_SECRET_PASSWORD
