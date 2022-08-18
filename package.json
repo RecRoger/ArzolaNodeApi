@@ -7,11 +7,11 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "cluster": "nodemon server.js 8050 CLUSTER",
+    "cluster": "nodemon server.js 8080 CLUSTER",
     "forever:start": "forever start server.js",
     "forever:stop": "forever stopall",
     "pm2:start": "pm2 start server.js --name=\"RecRoger_Project\" --watch",
-    "pm2:cluster": "pm2 start server.js --name=\"RecRoger_Project\" -i max -- 8051",
+    "pm2:cluster": "pm2 start server.js --name=\"RecRoger_Project\" -i max -- 8081",
     "pm2:restart": "pm2 restart \"RecRoger_Project\"",
     "pm2:stop": "pm2 stop \"RecRoger_Project\"",
     "pm2:logs": "pm2 logs",
