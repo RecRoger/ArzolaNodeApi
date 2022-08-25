@@ -4,3 +4,4 @@ db/products.txt
 db/chat.txt
 db/carts.txt
 .env
+logs/

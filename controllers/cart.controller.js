@@ -3,6 +3,7 @@ import { Router } from 'express'
 // import { productFile } from "../controllers/products.controller.js";
 import { productsCollection } from '../models/products.model.js'
 import { cartsCollection } from '../models/carts.model.js'
+import { logger } from '../logger.js'
 
 /**  IMPLEMENTACION VIEJA CON Files 
  * 
@@ -20,7 +21,7 @@ import { cartsCollection } from '../models/carts.model.js'
 */
 
 export const CreateCart = async (req, res) => {
-    console.log('> Crea nuevo carrito')
+    logger.info('> Crea nuevo carrito')
     const id = req.body?.id
 
     try {
@@ -32,7 +33,7 @@ export const CreateCart = async (req, res) => {
         if(!product) {
             return res.status(404).json({error: "Invalid Product"})
         }
-        console.log('> - Añadir elemento', product.name, ' al nuevo cart')
+        logger.info('> - Añadir elemento', product.name, ' al nuevo cart')
         const data = {
             id: Date.now().toString(),
             timestamp: new Date(),
@@ -51,23 +52,23 @@ export const CreateCart = async (req, res) => {
 }
 
 export const AddToCart = async (req, res) => {
-    console.log('> Añadir producto a carrito')
+    logger.info('> Añadir producto a carrito')
     const id = req.params.id
     const productId = req.body?.id
     
     try {
         if(!id || !productId) {
-            console.log('> ids invalidos')
+            logger.warn('> ids invalidos')
             return res.status(400).json({error:'invalid Ids'})
         }
-        console.log('> - Añadir product ', productId,' al cart ', id)
+        logger.info('> - Añadir product ', productId,' al cart ', id)
         
         let products = await productsCollection.find({id: productId}, { 
             _v: 0,
         });
         const [product] = products
         if(!product || !product?.id) {
-            console.log('> No hay productos')
+            logger.warn('> No hay productos')
             return res.status(404).json({error: "Invalid Product"})
         }
         
@@ -91,7 +92,7 @@ export const AddToCart = async (req, res) => {
 
 export const GetCart = async (req, res) => {
     const id = req.params.id
-    console.log('> Consultar carrito ', id)
+    logger.info('> Consultar carrito ', id)
     try {
         // let item = await cartFile.getById(id);
         const items = await cartsCollection.find({id}, {
@@ -112,21 +113,21 @@ export const GetCart = async (req, res) => {
 export const RemoveFromCar = async (req, res) => {
     const id = req.params.id
     const productId = req.params.productId
-    console.log('> Eliminar producto', product ,' del carrito', id)
+    logger.info('> Eliminar producto', product ,' del carrito', id)
     if(!id || !productId) {
-        console.log('> ids invalidos')
+        logger.warn('> ids invalidos')
         return res.status(400).json({error:'invalid Ids'})
     }
     
     try {
         // const cart = await cartFile.getById(id)
         // if(!cart?.products?.length) {
-        //     console.log('> No cart')
+        //     logger.info('> No cart')
         //     return res.status(404).json({error:'no cart'})
         // }
         // cart.products = cart.products.filter(product=> product.id !== productId)
         // if(!cart.products.length) {
-        //     console.log('> Vaciar carrito ', id)
+        //     logger.warn('> Vaciar carrito ', id)
         //     let edition = await cartFile.deleteById(id);
         //     return res.status(200).json((edition && {id, msg: 'Deleted'}) || {'error': 'no delete'})
         // }
@@ -140,7 +141,7 @@ export const RemoveFromCar = async (req, res) => {
 
         const cart = await cartsCollection.findOne({id})
         if (cart && !cart?.products?.length) {
-            console.log('> vaciar lista:', id)
+            logger.info('> vaciar lista:', id)
             const edition2 = await cartsCollection.deleteOne({id})
             return res.status(200).json((edition2.acknowledged && {id, msg: 'Deleted'}) || {'error': 'no delete'})
         }
@@ -155,7 +156,7 @@ export const RemoveFromCar = async (req, res) => {
 
 export const FlushCart = async (req, res) => {
     const id = req.params.id
-    console.log('> Vaciar carrito ', id)
+    logger.info('> Vaciar carrito ', id)
 
     try {
         // let edition = await cartFile.deleteById(id);

@@ -1,4 +1,5 @@
 import express from 'express'
+import { logger } from './logger.js'
 
 const app = express();
 const PORT = parseInt(process.argv[2]) || 8081;
@@ -35,5 +36,5 @@ app.get("/", renderServerData);
 app.get("/api/random", renderServerData);
 
 app.listen(PORT, () => {
-    console.log(`Server running on PORT: ${PORT}`);
+  logger.info(`Server running on PORT: ${PORT}`);
 })

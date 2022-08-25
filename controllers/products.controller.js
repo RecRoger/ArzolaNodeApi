@@ -1,5 +1,6 @@
 // import { FileManager } from "../db/fileManager.js";
 import { productsCollection } from '../models/products.model.js'
+import { logger } from '../logger.js'
 
 
 /** IMPLEMENTACION VIEJA CON Files 
@@ -32,7 +33,7 @@ import { productsCollection } from '../models/products.model.js'
 
 
 export const GetAllProducts = async (req, res) => {
-    console.log('> Consultar todos los elemento')
+    logger.info('> Consultar todos los elemento')
     try {
 
         // const insert = await productsCollection.insertMany(defaultProducts)
@@ -58,7 +59,7 @@ export const GetAllProducts = async (req, res) => {
 }
 export const GetOneProduct =  async (req, res) => {
     const id = Number(req.params.id)
-    console.log('> Consultar elemento get', id)
+    logger.info('> Consultar elemento get', id)
 
     try {
         let items = await productsCollection.find({id: id}, { 
@@ -77,7 +78,7 @@ export const GetOneProduct =  async (req, res) => {
 export const UpdateProduct = async (req, res) => {
     const id = Number(req.params.id)
     const data = req.body
-    console.log('> Actualizar elemento', id, data)
+    logger.info('> Actualizar elemento', id, data)
     
     try {
         let edition = await productsCollection.updateOne({id: id}, { 
@@ -101,7 +102,7 @@ export const UpdateProduct = async (req, res) => {
 }
 export const DeleteProduct = async (req, res) => {
     const id = Number(req.params.id)
-    console.log('> Eliminar elemento', id)
+    logger.info('> Eliminar elemento', id)
     try {
         // let edition = await productFile.deleteById(id);
 
@@ -114,7 +115,7 @@ export const DeleteProduct = async (req, res) => {
 }
 export const CreateProduct =  async (req, res) => {
     const data = req.body
-    console.log('> Añadir elemento', data.name)
+    logger.info('> Añadir elemento', data.name)
     
     if(!data?.name) {
         return res.status(400).json({error: "No Item"})

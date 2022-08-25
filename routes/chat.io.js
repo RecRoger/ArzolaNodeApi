@@ -1,6 +1,7 @@
 
 import { Server } from "socket.io";
 import { FileManager } from "../db/fileManager.js";
+import { logger } from '../logger.js'
 
 export const chatFile = new FileManager('chat', []);
 
@@ -19,15 +20,15 @@ export const startIO = (server) => {
 
     io.on('connection', async (channel) => {
         let channelUser = ''
-        console.log('> a user connected to chat');
+        logger.info('> a user connected to chat');
         const oldChat = await chatFile.getAll()
         io.emit('set old messages', oldChat)
         io.emit('set users', users)
         
         channel.on('incoming message', async ({username, message}) => {
-            console.log('> Nuevo mensaje de ' + username)
+            logger.info('> Nuevo mensaje de ' + username)
             if(users.indexOf(username) < 0) {
-                console.log('> Nuevo usuario')
+                logger.info('> Nuevo usuario')
                 channelUser = username
                 users.push(channelUser);
                 io.emit('set users', users)
@@ -40,7 +41,7 @@ export const startIO = (server) => {
         });
         
         channel.on('disconnect', () => {
-            console.log('> user disconnected from chat');
+            logger.info('> user disconnected from chat');
             if(users.indexOf(channelUser) >= 0) {
                 io.emit('user leave', channelUser)
                 users = users.filter(name=> name !== channelUser);

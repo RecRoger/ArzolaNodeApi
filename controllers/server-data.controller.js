@@ -1,16 +1,18 @@
 import os from 'os'
+import {logger} from '../logger.js'
 const numCpus = os?.cpus()?.length
 
+
 export const getServerData = async (req, res) => {
-  console.log('> Getting server data')
-  console.log("numCpus: ", numCpus);
+  logger.info('> Getting server data')
+  logger.info("numCpus: ", numCpus);
 
   let args = [...process.argv]
   
-  // console.log('> total args:', process.argv)
+  // logger.info('> total args:', process.argv)
   let nodeExe = args.shift();
-  // console.log('> node: ', nodeExe)
-  // console.log('> nodeVersion: ', process.version)
+  // logger.info('> node: ', nodeExe)
+  // logger.info('> nodeVersion: ', process.version)
   let file = null
   if(args && args.length) {
     let ejec = args.shift().split("\\");

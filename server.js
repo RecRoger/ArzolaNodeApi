@@ -14,12 +14,15 @@ import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
 import passport from 'passport'
+import {logger} from './logger.js'
 
 import { logedIn } from './middlewares/auth.js'
 import { getServerData } from './controllers/server-data.controller.js'
 
 import cluster from 'cluster';
 import os from 'os'
+
+import compression from 'compression'
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -33,12 +36,12 @@ startIO(server)
 // Cluster && Furk
 const numCpus = os?.cpus()?.length
 if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
-    console.log("numCpus: ", numCpus);
+    logger.info("numCpus: ", numCpus);
     for (let i = 0; i < numCpus; i++) {
         cluster.fork();
     }
     cluster.on('exit', worker => {
-        console.log(`Worker: ${worker.process.id} died`);
+        logger.info(`Worker: ${worker.process.id} died`);
         cluster.fork();
     });
 
@@ -70,6 +73,8 @@ if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
     app.use(express.urlencoded({extended: true}))
     app.use(express.static(__dirname + '/public'))
 
+    
+
     // public views routes
     app.get('/',  (req, res) => { res.sendFile('/index.html') })
     app.get('/chat',  (req, res) => { res.sendFile(__dirname + '/public' + '/chat.html') })
@@ -83,6 +88,7 @@ if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
     app.set('views', './views');
     app.get('/mocks', mocksRouter)
     app.get('/info', getServerData)
+    app.get('/infozip', compression(), getServerData)
 
 
     // api routes
@@ -101,8 +107,8 @@ if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
     // port server listening
     server.listen(PORT, async () => {
         await conectToDb()
-        console.log(`>> Server running on PORT: ${PORT}`)
-        console.log(`>> Process ID: ${process.pid}`)
+        logger.info(`>> Server running on PORT: ${PORT}`)
+        logger.info(`>> Process ID: ${process.pid}`)
     });
 
 
