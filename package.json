@@ -1,13 +1,13 @@
 {
   "name": "coderhouse-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "node server project from coderhouse class",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "cluster": "nodemon server.js 8080 CLUSTER",
+    "cluster": "nodemon server.js 8081 CLUSTER",
     "forever:start": "forever start server.js",
     "forever:stop": "forever stopall",
     "pm2:start": "pm2 start server.js --name=\"RecRoger_Project\" --watch",
@@ -15,12 +15,16 @@
     "pm2:restart": "pm2 restart \"RecRoger_Project\"",
     "pm2:stop": "pm2 stop \"RecRoger_Project\"",
     "pm2:logs": "pm2 logs",
+    "artilleryTest": "artillery quick --count 10 -n 20 'http://localhost:8080/info' > FORK.txt",
+    "autocannon": "node autocannon.js",
+    "0x": "0x server.js 8081",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "RecRoger",
   "license": "ISC",
   "dependencies": {
     "@faker-js/faker": "^7.3.0",
+    "autocannon": "^7.9.0",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",
