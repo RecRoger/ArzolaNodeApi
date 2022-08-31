@@ -29,7 +29,7 @@ const __dirname = dirname(__filename);
 
 // server inicialization
 const app = express();
-const PORT = process.argv[2] || 8080
+const PORT = process.argv[2] || process.env.PORT || 8080
 const server = http.createServer(app);
 startIO(server)
 
