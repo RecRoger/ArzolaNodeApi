@@ -1,6 +1,6 @@
 {
-  "name": "coderhouse-node",
-  "version": "1.0.1",
+  "name": "coderhouse-roger-node",
+  "version": "1.0.2",
   "description": "node server project from coderhouse class",
   "main": "server.js",
   "type": "module",
