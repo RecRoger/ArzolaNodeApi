@@ -5,6 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "build": "node server.js",
     "start": "node server.js",
     "dev": "nodemon server.js",
     "cluster": "nodemon server.js 8081 CLUSTER",
