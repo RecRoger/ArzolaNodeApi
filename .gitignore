@@ -5,3 +5,4 @@ db/chat.txt
 db/carts.txt
 .env
 logs/
+uploads/

@@ -2,7 +2,9 @@ const titleElement = document.getElementById('welcome-title')
 const userButton = document.getElementById('userDropdown')
 const userElement = document.getElementById('usrSession')
 const sessionActionElement = document.getElementById('usrBtns')
+let signImage = null
 
+let userData;
 
 // funcion para lectura de cookieParser, Ctrl+C/Ctrl+V de internet
 function getSessionCookie() {
@@ -24,16 +26,28 @@ function getSessionCookie() {
 (()=> {
     const session = getSessionCookie();
     if(session) {
+
         setSessionInterface()
     }
 })()
 
-function setSessionInterface(logout) {
+async function setSessionInterface(logout) {
     const session = getSessionCookie();
     if(!logout) {
-        titleElement.innerText = 'Bienvenido ' + session
-        userElement.innerHTML = `<h5>Usuario: ${session}</h5>`
-        sessionActionElement.innerHTML = `<button class="btn btn-dark" onclick="logout()">Cerrar sesión</button>`
+        console.log('session', session)
+        const response = await fetch('/api/users/' + session)
+        userData = await response.json();
+        titleElement.innerText = 'Bienvenido ' + userData.name
+        userElement.innerHTML = `
+        <div class="d-flex align-items-center mb-3">
+            <img src="${userData.image}" style="height: 50px; width: 50px">
+            <h5 class="ms-2">${userData.username}</h5>
+        </div>
+        `
+        sessionActionElement.innerHTML = `
+        <button class="btn btn-link" onclick="checkUserData()">Datos de usuario</button>
+        <button class="btn btn-dark" onclick="logout()">Cerrar sesión</button>
+        `
         userButton.innerHTML = `<i class="fa fa-user-check"></i>`
     } else {
         titleElement.innerText = 'Bienvenido'
@@ -64,6 +78,7 @@ async function login() {
             })
             session = await response.json();
             if(session?.login) {
+                console.log('login: ', session)
                 window.location.href = '/'
             } else if (session?.message == "No user") {
                 Swal.fire({
@@ -90,7 +105,7 @@ async function login() {
 }
 
 async function logout() {
-    const name = getSessionCookie();
+    const name = userData.name;
     const response = await fetch('/api/users/logout',{
         method: 'POST',
     })
@@ -113,6 +128,8 @@ async function signin() {
     const email = document.getElementById('signMail').value
     const username = document.getElementById('signUsername').value
     const password = document.getElementById('signPassword').value
+    const phone = document.getElementById('signPhone').value
+    const address = document.getElementById('signAddress').value
     const confirmPassword = document.getElementById('confirmPassword').value
 
     if(name && email && username && password && confirmPassword) {
@@ -134,6 +151,9 @@ async function signin() {
                     name,
                     email,
                     username,
+                    image: signImage,
+                    phone,
+                    address,
                     password,
                 }),
                 headers: {
@@ -172,5 +192,63 @@ async function signin() {
         }
     }
 
+}
+
+function fileChange() {
+    const target = document.getElementById('signImage')
+    console.log('pasa pora ca')
+    if (target.files) {
+      // this.applyForm.get('file').setValue(target.files[0]);
+      var reader = new FileReader();
+      reader.onload = (event) => {
+        signImage = event.target.result;
+      }
+      reader.readAsDataURL(target.files[0]);
+    }
+}
+
+function checkUserData() {
+    Swal.fire({
+        title: '<strong>Datos de usuario</strong>',
+        icon: 'info',
+        imageUrl: userData.image,
+        imageHeight: 300,
+        html:
+          `<ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto text-start">
+                    <div class="fw-bold">Nombre: </div>
+                    ${userData.name}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto text-start">
+                    <div class="fw-bold">Email: </div>
+                    ${userData.email}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto text-start">
+                    <div class="fw-bold">Usuario: </div>
+                    ${userData.username}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto text-start">
+                    <div class="fw-bold">Telefono: </div>
+                    ${userData.phone}
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto text-start">
+                    <div class="fw-bold">Direccion: </div>
+                    ${userData.address}
+                </div>
+            </li>
+          </ul>`,
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+      })
 }
 

@@ -1,5 +1,6 @@
 import { usersCollection } from '../models/users.model.js'
 import { logger } from '../logger.js'
+import {saveFile} from '../commons/utils.js'
 
 export const getUser = async (username) => {
     logger.info('> Consultando usuario ', username)
@@ -20,7 +21,12 @@ export const registerUser = async (user) => {
     const { email, username } = user
     logger.info('> Registrando usuario ', email, username)
     try {
-        let newUser = await usersCollection.insertMany([{...user, signUpDate: new Date()}]);
+        let filePath = '';
+        if(user.image) {
+            const fileName = `${username}`;
+            filePath = saveFile(user.image, fileName, 'users');
+        }
+        let newUser = await usersCollection.insertMany([{...user, image: filePath, signUpDate: new Date()}]);
         return newUser[0]
     } catch(e) {
         logger.error('> ERROR', e)
@@ -53,7 +59,7 @@ export const passportAfterLogin = async (req, res) => {
     try {
         let tiempo = parseInt(req.query.tiempo) || 60000;
         const user = req.session.passport.user
-        return res.status(200).cookie('chSession', user.name, {maxAge: tiempo}).json({login: true})
+        return res.status(200).cookie('chSession', user.id, {maxAge: tiempo}).json({login: true})
     } catch(e) {
         return res.status(400).json({login: false, message: "No session", error: e})
     }
@@ -89,8 +95,18 @@ export const passportAfterSignup = async (req, res) => {
     }
 }
 
+export const getUserData = async (req,res) => {
+    const id = Number(req.params.id)
+    logger.info('> Consultando usuario:', id)
+
+    let items = await usersCollection.findOne({id}, { 
+        password: 0,
+    });
+    return res.status(200).json(items)
+}
+
 export const logout = async (req, res) => {
-    cologger.info('> Logout de usuario ', req?.session?.passport?.user?.username)
+    logger.info('> Logout de usuario ', req?.session?.passport?.user?.username)
     // Eliminacion Manual de la session
     /* try {
         logger.info('> Logout de usuario ', req.session.username)

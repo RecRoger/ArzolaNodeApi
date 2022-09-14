@@ -5,6 +5,9 @@ export const usersSquema = new mongoose.Schema({
   name: { type: String, required: true},    
   email: { type: String, required: true, unique: true},    
   username: { type: String, required: true, unique: true},    
+  image: { type: String},
+  phone: { type: String, required: true},
+  address: { type: String},
   password: { type: String, required: true},    
   signUpDate: { type: Date, required: true},
 })

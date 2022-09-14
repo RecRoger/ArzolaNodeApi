@@ -31,56 +31,106 @@
         </div>
         <div class="row border border-top-0 rounded-bottom py-3">
 
-            <div class="col-6 p-3">
+            <div class="col-12 p-3">
                 <div class="card card-body">
                     <h5>Iniciar sesion</h5>
-                    <form class="mt-3 text-end">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="loginUsername" name="loginUsername"
-                                placeholder="Nombre de usuario">
-                            <label for="loginUsername">Usuario</label>
+                    <form class="mt-3 text-end row">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="loginUsername" name="loginUsername"
+                                    placeholder="Nombre de usuario">
+                                <label for="loginUsername">Usuario</label>
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="loginPassword" name="loginPassword"
-                                placeholder="Descripcion">
-                            <label for="loginPassword">Contraseña</label>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="loginPassword" name="loginPassword"
+                                    placeholder="Descripcion">
+                                <label for="loginPassword">Contraseña</label>
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-dark mt-3" onclick="login()">
-                            Iniciar sesion
-                        </button>
+                        <div class="col-12">
+                            <button type="button" class="btn btn-dark" onclick="login()">
+                                Iniciar sesion
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
-            <div class="col-6 p-3">
+            <div class="col-12 p-3">
                 <div class="card card-body">
                     <h5>Registrarse</h5>
-                    <form class="mt-3 text-end">
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="signName" name="signName" placeholder="Nombre">
-                            <label for="signName">Nombre</label>
+                    <form class="mt-3 text-end row" enctype="multipart/form-data">
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="signName" name="signName"
+                                    placeholder="Nombre">
+                                <label for="signName">Nombre</label>
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="signMail" name="signMail" placeholder="Correo">
-                            <label for="signMail">Correo</label>
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="email" class="form-control" id="signMail" name="signMail"
+                                    placeholder="Correo">
+                                <label for="signMail">Correo</label>
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="signUsername" name="signUsername"
-                                placeholder="Nombre del elemento">
-                            <label for="signUsername">Usuario</label>
+
+                        <div class="col-6">
+                            <div class="text-start mb-3">
+                                <label for="signImage" class="">Imagen de perfil</label>
+                                <input class="form-control" type="file" id="signImage" accept="image/*"
+                                    onchange="fileChange()">
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="signPassword" name="signPassword"
-                                placeholder="Descripcion">
-                            <label for="signPassword">Contraseña</label>
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="signUsername" name="signUsername"
+                                    placeholder="Nombre del elemento">
+                                <label for="signUsername">Usuario</label>
+                            </div>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
-                                placeholder="Descripcion">
-                            <label for="confirmPassword">Confirma Contraseña</label>
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="tel" class="form-control" id="signPhone" name="signPhone"
+                                    placeholder="Nombre del elemento">
+                                <label for="signPhone">Telefono</label>
+                            </div>
                         </div>
-                        <button type="button" class="btn btn-dark mt-3" onclick="signin()">
-                            Registrarse
-                        </button>
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="signAddress" name="signAddress"
+                                    placeholder="Nombre del elemento">
+                                <label for="signAddress">Direccion</label>
+                            </div>
+                        </div>
+
+
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="signPassword" name="signPassword"
+                                    placeholder="Descripcion">
+                                <label for="signPassword">Contraseña</label>
+                            </div>
+
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                    placeholder="Descripcion">
+                                <label for="confirmPassword">Confirma Contraseña</label>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="button" class="btn btn-dark mt-3" onclick="signin()">
+                                Registrarse
+                            </button>
+                        </div>
                     </form>
                 </div>
 

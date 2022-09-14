@@ -15,7 +15,7 @@ import session from 'express-session'
 import mongoStore from 'connect-mongo'
 import passport from 'passport'
 import {logger} from './logger.js'
-
+import path from 'path';
 import { logedIn } from './middlewares/auth.js'
 import { getServerData } from './controllers/server-data.controller.js'
 
@@ -69,9 +69,21 @@ if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
     app.use(passport.session())
 
     // api middlewares
-    app.use(express.json())
-    app.use(express.urlencoded({extended: true}))
+    app.use(express.json({limit: '50mb'}))
+    app.use(express.urlencoded({extended: true,limit: '50mb'}))
     app.use(express.static(__dirname + '/public'))
+
+    app.get(
+        '/uploads/users/:file',
+        function (req, res) {
+            const img = req.params.file;
+            const filePath = `./uploads/users/${img}`;
+            console.log('file path: ', path);
+            const file = path.resolve(__dirname, filePath);
+            // No need for special headers
+            res.download(file);
+        },
+    );
 
     
 
