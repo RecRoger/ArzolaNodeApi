@@ -3,6 +3,7 @@ import { Router } from 'express'
 // import { productFile } from "../controllers/products.controller.js";
 import { productsCollection } from '../models/products.model.js'
 import { cartsCollection } from '../models/carts.model.js'
+import { usersCollection } from '../models/users.model.js'
 import { logger } from '../logger.js'
 
 /**  IMPLEMENTACION VIEJA CON Files 
@@ -166,5 +167,37 @@ export const FlushCart = async (req, res) => {
         
     } catch (e) {
         return res.status(200).json({'message': 'no delete', error: e})
+    }
+}
+
+export const PurchaseCart = async (req, res) => {
+    const cartId = req.body.cartId
+    const username = req.body.username
+
+    logger.info('> Generar orden de compra ')
+    logger.info('> Cart: ', cartId)
+    logger.info('> User: ', username)
+
+    try {
+        
+        const users = await usersCollection.find({username}, {
+            password: 0
+        })
+        const [user] = users
+        const items = await cartsCollection.find({id: cartId}, {
+            _v: 0,
+            _id: 0,
+            "products._id": 0,
+            "products._v": 0,
+            "products.timestamp": 0
+        })
+        const [item] = items
+
+        // sendMail
+
+        return res.status(200).json({message: 'ok'})
+        
+    } catch (e) {
+        return res.status(500).json({'message': 'no order', error: e})
     }
 }

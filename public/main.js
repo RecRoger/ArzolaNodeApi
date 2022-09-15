@@ -1,13 +1,18 @@
 let productList = [];
 let cartId = localStorage.getItem('cartId');
+let purhcaseOrder = localStorage.getItem('purchaseOrder');
 
 const cartElement = document.getElementById('cartList');
 const cartBtn = document.getElementById('cartBtn');
+let cartList = [];
 
 (async ()=> {
     getAllProducts();
     if(cartId) {
-        getAllCart()
+        await getAllCart()
+    }
+    if(purhcaseOrder && getSessionCookie()) {
+        purchaseCart()
     }
 })()
 
@@ -70,13 +75,15 @@ async function showDetail(id) {
 
 async function getAllCart(){
     const response = await fetch('/api/cart/'+cartId)
-    const cartList = await response.json();
+    cartList = await response.json();
     if(cartList?.length) {
         cartElement.innerHTML = ''
         cartList.forEach(product=> {
             displayCartItem(product)
         })
         cartBtn.innerHTML = `
+
+            <button id="purchaseBtn" class="btn btn-sm btn-primary mt-3" onclick="purchaseCart()">Continuar con la Compra</button>
             <button id="flushBtn" class="btn btn-sm btn-dark mt-3" onclick="flushCart()">Vaciar Carrito</button>
         `
     }
@@ -97,6 +104,7 @@ async function addToCart(id) {
         newCart = await response.json();
         if(newCart.id) {
             cartBtn.innerHTML = `
+                <button id="purchaseBtn" class="btn btn-sm btn-primary mt-3" onclick="purchaseCart()">Continuar con la Compra</button>
                 <button id="flushBtn" class="btn btn-sm btn-dark mt-3" onclick="flushCart()" >Vaciar Carrito</button>
             `
             cartId = newCart.id
@@ -141,9 +149,9 @@ async function addToCart(id) {
 }
 
 function displayCartItem(data) {
-    let cartList = cartElement.innerHTML;
-    cartList += `<li class="cart-item list-group-item">${data.name} <i class="float-end fa fa-trash text-danger ms-4" onclick="removeFromCart(${data.id})"></i></li>`
-    cartElement.innerHTML = cartList
+    let cartListTemplate = cartElement.innerHTML;
+    cartListTemplate += `<li class="cart-item list-group-item">${data.name} <i class="float-end fa fa-trash text-danger ms-4" onclick="removeFromCart(${data.id})"></i></li>`
+    cartElement.innerHTML = cartListTemplate
 }
 
 function removeFromCart(productId) {
@@ -242,5 +250,74 @@ function flushCart() {
     
     
 }
+
+function purchaseCart() {
+    localStorage.setItem('purchaseOrder', cartId)
+    const session = getSessionCookie();
+    if(!session) {
+        window.location.href = '/login'
+        return
+    }
+
+    console.log(cartList)
+    const purchaseTemplate = `<ul class="list-group list-group-flush">` + cartList.map(item=> `
+        <li class="list-group-item d-flex align-items-center">
+            <img src="${item.thumbnail}" style="height: 50px; width: 50px">
+            <div class="fw-bold me-auto">${item.name}</div>
+            <div>$${item.price}</div>
+            
+        </li>
+    `).join('') + `
+        <li class="list-group-item d-flex align-items-center">
+            <div class="fw-bold ms-auto">TOTAL: </div>
+            <div class="ms-3">$${
+                cartList.reduce((total, item) => total + item.price, 0)
+            }</div>
+        </li>
+    </ul>`
+
+    Swal.fire({
+        title: '<strong>Orden de compra</strong>',
+        icon: 'info',
+        html: purchaseTemplate,
+        showCancelButton: true,
+        cancelButtonText: 'Añadir mas productos',
+        confirmButtonText: 'Confirmar orden de compra',
+        preConfirm: () => {
+            return fetch(`/api/cart/purchase`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    cartId,
+                    username: userData.username
+                 }),
+                 headers: {
+                     'Content-type': 'application/json; charset=UTF-8',
+                 },
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error(response.statusText)
+                }
+                return response.json()
+              })
+              .catch(error => {
+                Swal.showValidationMessage(
+                  `Request failed: ${error}`
+                )
+              })
+          },
+          allowOutsideClick: () => !Swal.isLoading()
+      }).then((result)=> {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'success',
+                title: `Orden de compra realizada`,
+            })
+        }
+      })
+}
+
+
+
 
 

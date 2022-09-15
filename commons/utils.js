@@ -1,5 +1,7 @@
 import fs from 'fs';
 import {logger} from '../logger.js'
+import nodemailer from 'nodemailer'
+
 
 export function saveFile(baseImage, filename, dir) {
   logger.info('-->>>> Uploading File');
@@ -30,3 +32,44 @@ export function saveFile(baseImage, filename, dir) {
   logger.info('------->>>');
   return filepath;
 }
+
+
+export async function asyncSendMail(asunto,mensaje,to,attac) {
+  return new Promise((resolve, reject) => {
+    
+    logger.info(">> Envio de mail to ", to)
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.ADMIN_MAIL,
+        pass: process.env.ADMIN_MAIL_PASS,
+      },
+      secure: false,
+      tls: {
+        rejectUnauthorized: false,
+      },
+    });
+
+    const mailOptions = {
+        from: process.env.ADMIN_MAIL,
+        to: to || process.env.ADMIN_MAIL,
+        subject: asunto,
+        html: mensaje,
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+        if(err) {
+            logger.info(">> Mail Error: ", err);
+            resolve(false);
+        }
+
+        console.log(info);
+        resolve(true)
+    })
+  
+  })
+}
+
+
+

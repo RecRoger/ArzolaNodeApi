@@ -3,7 +3,7 @@ import { CreateCart,
     GetCart,
     AddToCart,
     RemoveFromCar,
-    FlushCart } from "../controllers/cart.controller.js";
+    FlushCart, PurchaseCart } from "../controllers/cart.controller.js";
 
 export const cartRouter = Router()
 
@@ -17,3 +17,5 @@ cartRouter.post('/:id/products', AddToCart)
 cartRouter.delete('/:id/products/:productId',  RemoveFromCar)
 
 cartRouter.delete('/:id', FlushCart)
+
+cartRouter.post('/purchase', PurchaseCart)

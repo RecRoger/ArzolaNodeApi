@@ -1,6 +1,6 @@
 import { usersCollection } from '../models/users.model.js'
 import { logger } from '../logger.js'
-import {saveFile} from '../commons/utils.js'
+import {saveFile, asyncSendMail} from '../commons/utils.js'
 
 export const getUser = async (username) => {
     logger.info('> Consultando usuario ', username)
@@ -26,7 +26,38 @@ export const registerUser = async (user) => {
             const fileName = `${username}`;
             filePath = saveFile(user.image, fileName, 'users');
         }
+
         let newUser = await usersCollection.insertMany([{...user, image: filePath, signUpDate: new Date()}]);
+        await asyncSendMail('Nuevo Registro', `
+            <h3>Nuevo usuario</h3>
+            <ul>
+                <li>
+                    <b>Nombre: </b>
+                        ${user.name}
+                    </div>
+                </li>
+                <li>
+                    <b>Email: </b>
+                        ${user.email}
+                    </div>
+                </li>
+                <li>
+                    <b>Usuario: </b>
+                        ${user.username}
+                    </div>
+                </li>
+                <li>
+                    <b>Telefono: </b>
+                        ${user.phone}
+                    </div>
+                </li>
+                <li>
+                    <b>Direccion: </b>
+                        ${user.address}
+                    </div>
+                </li>
+            </ul>
+        `, process.env.ADMIN_MAIL)
         return newUser[0]
     } catch(e) {
         logger.error('> ERROR', e)

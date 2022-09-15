@@ -34,7 +34,6 @@ function getSessionCookie() {
 async function setSessionInterface(logout) {
     const session = getSessionCookie();
     if(!logout) {
-        console.log('session', session)
         const response = await fetch('/api/users/' + session)
         userData = await response.json();
         titleElement.innerText = 'Bienvenido ' + userData.name
@@ -196,7 +195,6 @@ async function signin() {
 
 function fileChange() {
     const target = document.getElementById('signImage')
-    console.log('pasa pora ca')
     if (target.files) {
       // this.applyForm.get('file').setValue(target.files[0]);
       var reader = new FileReader();
@@ -210,7 +208,6 @@ function fileChange() {
 function checkUserData() {
     Swal.fire({
         title: '<strong>Datos de usuario</strong>',
-        icon: 'info',
         imageUrl: userData.image,
         imageHeight: 300,
         html:
