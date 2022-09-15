@@ -199,7 +199,7 @@ export const PurchaseCart = async (req, res) => {
             
             await asyncSendMail('Nuevo Pedido de ' + user.name, `
                 <h3>Nueva orden de compra: ${item.id}</h3>
-                ${(new Date()).toLocaleDateString()}
+                ${(new Date()).toLocaleString()}
                 <br>
                 <table>
                     <tr>
@@ -225,7 +225,7 @@ export const PurchaseCart = async (req, res) => {
             `, process.env.ADMIN_MAIL)
 
             await asyncSendText(process.env.ADMIN_PHONE, `Nueva orden de compra
-${(new Date()).toLocaleDateString()}
+${(new Date()).toLocaleString()}
 Nº Orden: ${item.id}
 Usuario: ${user.username} - ${user.name}
 
@@ -244,6 +244,7 @@ TOTAL: $${item.products.reduce((total, p) => total + p.price, 0)}
 Gracias comprar con nosotros
 
 Su orden Nº Orden ${item.id} esta siendo procesada, le responderemos lo mas pronto posible.
+${(new Date()).toLocaleString()}
 
 PRODUCTOS:
 ${
