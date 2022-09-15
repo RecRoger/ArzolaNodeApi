@@ -258,8 +258,6 @@ function purchaseCart() {
         window.location.href = '/login'
         return
     }
-
-    console.log(cartList)
     const purchaseTemplate = `<ul class="list-group list-group-flush">` + cartList.map(item=> `
         <li class="list-group-item d-flex align-items-center">
             <img src="${item.thumbnail}" style="height: 50px; width: 50px">
@@ -302,18 +300,36 @@ function purchaseCart() {
               })
               .catch(error => {
                 Swal.showValidationMessage(
-                  `Request failed: ${error}`
+                  `Ha ocurrido un error: ${error}`
                 )
               })
-          },
-          allowOutsideClick: () => !Swal.isLoading()
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+        
       }).then((result)=> {
         if (result.isConfirmed) {
-            Swal.fire({
-                icon: 'success',
-                title: `Orden de compra realizada`,
-            })
-        }
+            const response = result.value
+            if(response.result == 'ok') {
+                cartElement.innerHTML = '<li class="list-group-item">Aun no hay elementos</li>';
+                cartBtn.innerHTML = ``
+                localStorage.removeItem('cartId');
+                cartId = null
+                Swal.fire({
+                    icon: 'success',
+                    title: `Orden de compra realizada`,
+                })
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: `Ha ocurrido un error`,
+                })
+            } 
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+          ) {
+            localStorage.removeItem('purchaseOrder')
+          }
       })
 }
 

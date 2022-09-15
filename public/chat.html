@@ -36,15 +36,12 @@
         </p>
 
         <div class="row">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="app-navbar">
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/">Productos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link active" href="./chat">Ver Chat</a>
-                </li>
-                <li class="nav-item ms-auto">
-                    <a class="nav-link" href="./products">Editar Productos</a>
                 </li>
             </ul>
         </div>
@@ -86,7 +83,6 @@
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://kit.fontawesome.com/74f86e9c4a.js" crossorigin="anonymous"></script>
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src='./sessions.js'></script>
     <script>
         const socket = io();
 
@@ -95,14 +91,6 @@
         const messageInput = document.getElementById('message')
         const containerElement = document.getElementById('messagesContainer')
         const usersElement = document.getElementById('usersContainer');
-
-        (() => {
-            const session = getSessionCookie();
-            if (session) {
-                usernameInput.value = session
-                usernameInput.setAttribute('readonly', true)
-            }
-        })()
 
         const messageTemplate = (chatMessage) => {
             let date = (new Date(chatMessage.date)).toLocaleString()
@@ -180,6 +168,7 @@
         }
 
     </script>
+    <script src='./sessions.js'></script>
 </body>
 
 </html>

@@ -1,10 +1,10 @@
-import { Router } from 'express'
 // import { FileManager } from "../db/fileManager.js";
 // import { productFile } from "../controllers/products.controller.js";
 import { productsCollection } from '../models/products.model.js'
 import { cartsCollection } from '../models/carts.model.js'
 import { usersCollection } from '../models/users.model.js'
 import { logger } from '../logger.js'
+import {asyncSendText, asyncSendMail} from '../commons/utils.js'
 
 /**  IMPLEMENTACION VIEJA CON Files 
  * 
@@ -193,9 +193,75 @@ export const PurchaseCart = async (req, res) => {
         })
         const [item] = items
 
-        // sendMail
+        
+        if(user && item?.products?.length) {
 
-        return res.status(200).json({message: 'ok'})
+            
+            await asyncSendMail('Nuevo Pedido de ' + user.name, `
+                <h3>Nueva orden de compra: ${item.id}</h3>
+                ${(new Date()).toLocaleDateString()}
+                <br>
+                <table>
+                    <tr>
+                        <th>Product</th>
+                        <th>stock</th>
+                        <th>Precio</th>
+                    </tr>
+                    ${
+                        item.products.map(prod=> `
+                        <tr>
+                            <td>${prod.name}</td>
+                            <td style="text-align: center">${prod.stock}</td>
+                            <td>$${prod.price}</td>
+                        </tr>
+                        `).join('')
+                    }
+                    <tr>
+                        <td></td>
+                        <td style="text-align: right">Total: </td>
+                        <th> $${item.products.reduce((total, p) => total + p.price, 0)}</th>
+                    </tr>
+                </table>
+            `, process.env.ADMIN_MAIL)
+
+            await asyncSendText(process.env.ADMIN_PHONE, `Nueva orden de compra
+${(new Date()).toLocaleDateString()}
+Nº Orden: ${item.id}
+Usuario: ${user.username} - ${user.name}
+
+PRODUCTOS:
+${
+item.products.map(prod=> `-- ${prod.name}
+----stock: ${prod.stock}
+----$${prod.price}
+`).join('')
+                }
+TOTAL: $${item.products.reduce((total, p) => total + p.price, 0)}
+             `, true);
+
+            if(user.phone && user.phone.length === 10 && ['11', '15'].includes(user.phone.slice(0,2)) ) {
+                await asyncSendText(user.phone, `
+Gracias comprar con nosotros
+
+Su orden Nº Orden ${item.id} esta siendo procesada, le responderemos lo mas pronto posible.
+
+PRODUCTOS:
+${
+item.products.map(prod=> `-- ${prod.name}
+----$${prod.price}
+`).join('')
+                }
+TOTAL: $${item.products.reduce((total, p) => total + p.price, 0)}
+
+Muchas gracias!!
+            `, false);
+            }
+            return res.status(200).json({result: 'ok'})
+        }
+        return res.status(200).json({result: 'fail'})
+
+
+
         
     } catch (e) {
         return res.status(500).json({'message': 'no order', error: e})

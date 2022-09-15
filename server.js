@@ -78,7 +78,6 @@ if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
         function (req, res) {
             const img = req.params.file;
             const filePath = `./uploads/users/${img}`;
-            console.log('file path: ', path);
             const file = path.resolve(__dirname, filePath);
             // No need for special headers
             res.download(file);

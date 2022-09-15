@@ -3,7 +3,7 @@ import { logger } from '../logger.js'
 import {saveFile, asyncSendMail} from '../commons/utils.js'
 
 export const getUser = async (username) => {
-    logger.info('> Consultando usuario ', username)
+    logger.info('> Consultando si usuario ', username , ' existe ')
     try {
         const users = await usersCollection.findOne({
             $or: [
@@ -27,7 +27,7 @@ export const registerUser = async (user) => {
             filePath = saveFile(user.image, fileName, 'users');
         }
 
-        let newUser = await usersCollection.insertMany([{...user, image: filePath, signUpDate: new Date()}]);
+        let newUser = await usersCollection.insertMany([{...user, image: filePath, role: 'client', signUpDate: new Date()}]);
         await asyncSendMail('Nuevo Registro', `
             <h3>Nuevo usuario</h3>
             <ul>
@@ -127,10 +127,10 @@ export const passportAfterSignup = async (req, res) => {
 }
 
 export const getUserData = async (req,res) => {
-    const id = Number(req.params.id)
-    logger.info('> Consultando usuario:', id)
+    const id = req.params.id
+    logger.info('> Consultando datos de usuario:', id)
 
-    let items = await usersCollection.findOne({id}, { 
+    let items = await usersCollection.findOne({_id: id}, { 
         password: 0,
     });
     return res.status(200).json(items)

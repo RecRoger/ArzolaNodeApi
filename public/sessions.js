@@ -4,7 +4,7 @@ const userElement = document.getElementById('usrSession')
 const sessionActionElement = document.getElementById('usrBtns')
 let signImage = null
 
-let userData;
+var userData;
 
 // funcion para lectura de cookieParser, Ctrl+C/Ctrl+V de internet
 function getSessionCookie() {
@@ -23,15 +23,19 @@ function getSessionCookie() {
     return "";
 }
 
+function getUserData() {
+    return userData
+}
+
 (()=> {
     const session = getSessionCookie();
     if(session) {
-
         setSessionInterface()
     }
 })()
 
 async function setSessionInterface(logout) {
+    const usernameInput = document.getElementById('username')
     const session = getSessionCookie();
     if(!logout) {
         const response = await fetch('/api/users/' + session)
@@ -48,6 +52,18 @@ async function setSessionInterface(logout) {
         <button class="btn btn-dark" onclick="logout()">Cerrar sesión</button>
         `
         userButton.innerHTML = `<i class="fa fa-user-check"></i>`
+        
+        const navbarElement = document.getElementById('app-navbar')
+        if (navbarElement && userData.role === 'admin'){
+            navbarElement.innerHTML += `
+                <li class="nav-item ms-auto" id="adminSectionTab">
+                    <a class="nav-link" href="./products">Editar Productos</a>
+                </li>`
+        }
+        if(usernameInput) {
+            usernameInput.value = userData.username
+            usernameInput.setAttribute('readonly', true)
+        }
     } else {
         titleElement.innerText = 'Bienvenido'
         userElement.innerHTML = `<h5>No se iniciado sesion</h5>`
@@ -55,6 +71,11 @@ async function setSessionInterface(logout) {
         <button class="btn btn-primary">Iniciar sesion / Registrarse</button>
         </a>`
         userButton.innerHTML = `<i class="fa fa-user"></i>`
+        document.getElementById('adminSectionTab').remove()
+        if(usernameInput) {
+            usernameInput.value = ''
+            usernameInput.setAttribute('readonly', false)
+        }
     }
 }
 
@@ -77,7 +98,6 @@ async function login() {
             })
             session = await response.json();
             if(session?.login) {
-                console.log('login: ', session)
                 window.location.href = '/'
             } else if (session?.message == "No user") {
                 Swal.fire({

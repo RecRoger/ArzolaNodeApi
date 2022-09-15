@@ -1,6 +1,7 @@
 import fs from 'fs';
 import {logger} from '../logger.js'
 import nodemailer from 'nodemailer'
+import twilio from 'twilio'
 
 
 export function saveFile(baseImage, filename, dir) {
@@ -63,11 +64,37 @@ export async function asyncSendMail(asunto,mensaje,to,attac) {
             logger.info(">> Mail Error: ", err);
             resolve(false);
         }
-
-        console.log(info);
         resolve(true)
     })
   
+  })
+}
+
+
+export async function asyncSendText(to, message, whatsapp) {
+  return new Promise((resolve, reject)=> {
+
+    logger.info(`>> Envio de ${whatsapp ? 'whatsapp ':'txt '} to `, to)
+
+    const accountSid = process.env.TWILIO_ACCOUNT_SID;
+    const authToken = process.env.TWILIO_AUTH_TOKEN;
+    const client = twilio(accountSid, authToken);
+    
+    client.messages
+      .create({
+         body: message,
+         from: (whatsapp ? 'whatsapp:+14155238886':'+16815400179'),
+         to: (whatsapp?'whatsapp:+549' : '+54') +to,
+       })
+      .then(message => {
+        console.log(message.sid);
+        resolve(message);
+      })
+      .catch((e) => {
+        logger.error('>>> error con el sms', e)
+        resolve(null)
+      });
+
   })
 }
 
