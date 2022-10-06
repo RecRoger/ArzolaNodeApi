@@ -14,16 +14,17 @@ export function saveFile(baseImage, filename, dir) {
   const regex = new RegExp(`^data:${fileType}\/${ext};base64,`, 'gi');
   
   const base64Data = baseImage.replace(regex, '');
-    // Check that if directory is present or not.
-    const directories = localPath.split('/');
-    let checkPath = '';
-    for (const path of directories) {
-        checkPath += path + '/';
-        if (!fs.existsSync(checkPath)) {
-            fs.mkdirSync(checkPath);
-        }
-    }
-    console.log('>>> Path confirm: ', localPath);
+  
+  //   // Check that if directory is present or not.
+  //   const directories = localPath.split('/');
+  //   let checkPath = '';
+  //   for (const path of directories) {
+  //       checkPath += path + '/';
+  //       if (!fs.existsSync(checkPath)) {
+  //           fs.mkdirSync(checkPath);
+  //       }
+  //   }
+  //   console.log('>>> Path confirm: ', localPath);
 
 
   const filepath = `${localPath}${filename}.${ext}`;
