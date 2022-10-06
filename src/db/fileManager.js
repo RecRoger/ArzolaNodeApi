@@ -1,14 +1,14 @@
 import * as fs from 'fs';
-import { logger } from '../logger.js'
+import { logger } from '../commons/logger.js'
 
 export class FileManager {
     constructor(fileName, defaultContent) {
         this.fileName = fileName;
         try {
-            fs.readFileSync(`./db/${this.fileName}.txt`, 'utf-8');
+            fs.readFileSync(`./src/db/${this.fileName}.txt`, 'utf-8');
             logger.info(`>> El archivo ${this.fileName}.txt ya existe`);
         } catch (err) {
-            fs.writeFileSync(`./db/${this.fileName}.txt`, JSON.stringify(defaultContent) || '');
+            fs.writeFileSync(`./src/db/${this.fileName}.txt`, JSON.stringify(defaultContent) || '');
             logger.warn(`>> El archivo ${this.fileName}.txt fue creado correctamente`);
         }
     }

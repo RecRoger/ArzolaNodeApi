@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { logger } from '../logger.js'
+import { logger } from '../commons/logger.js'
 
 const dbuser = process.env.DB_SECRET_USER
 const dbpass = process.env.DB_SECRET_PASSWORD

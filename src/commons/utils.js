@@ -1,5 +1,5 @@
 import fs from 'fs';
-import {logger} from '../logger.js'
+import {logger} from '../commons/logger.js'
 import nodemailer from 'nodemailer'
 import twilio from 'twilio'
 

@@ -3,8 +3,8 @@ import log4js from 'log4js'
 log4js.configure({
     appenders: {
         loggerDev: {type: "console"},
-        loggerWarn: {type: "file", filename: "logs/warns.log"},
-        loggerError: {type: "file", filename: "logs/errors.log"}
+        loggerWarn: {type: "file", filename: "/logs/warns.log"},
+        loggerError: {type: "file", filename: "/logs/errors.log"}
     },
     categories: {
         default: { appenders: ["loggerDev"], level: "all"},

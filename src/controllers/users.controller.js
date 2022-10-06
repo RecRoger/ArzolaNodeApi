@@ -1,5 +1,5 @@
 import { usersCollection } from '../models/users.model.js'
-import { logger } from '../logger.js'
+import { logger } from '../commons/logger.js'
 import {saveFile, asyncSendMail} from '../commons/utils.js'
 
 export const getUser = async (username) => {

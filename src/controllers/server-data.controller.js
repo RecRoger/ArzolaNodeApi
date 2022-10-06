@@ -1,5 +1,5 @@
 import os from 'os'
-import {logger} from '../logger.js'
+import {logger} from '../commons/logger.js'
 const numCpus = os?.cpus()?.length
 
 

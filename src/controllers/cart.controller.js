@@ -3,7 +3,7 @@
 import { productsCollection } from '../models/products.model.js'
 import { cartsCollection } from '../models/carts.model.js'
 import { usersCollection } from '../models/users.model.js'
-import { logger } from '../logger.js'
+import { logger } from '../commons/logger.js'
 import {asyncSendText, asyncSendMail} from '../commons/utils.js'
 
 /**  IMPLEMENTACION VIEJA CON Files 

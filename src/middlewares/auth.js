@@ -1,7 +1,7 @@
 import passport from 'passport'
 import LocalStrategy from 'passport-local'
 import { getUser, registerUser } from '../controllers/users.controller.js'
-import {logger} from '../logger.js'
+import {logger} from '../commons/logger.js'
 
 export const logedIn = (req, res, next) => {
     // Validacion Manual, ya no se usa

@@ -1,23 +1,23 @@
 import express from 'express'
 import 'dotenv/config'
-import { startIO } from './routes/chat.io.js';
+import { startIO } from './src/routes/chat.io.js';
 import { engine } from 'express-handlebars'
-import { productsRouter } from './routes/products.routes.js'
-import { cartRouter } from './routes/cart.routes.js'
-import { mocksRouter } from './mocks/mocks.routes.js'
+import { productsRouter } from './src/routes/products.routes.js'
+import { cartRouter } from './src/routes/cart.routes.js'
+import { mocksRouter } from './src/mocks/mocks.routes.js'
 import http  from 'http';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { dbCS, conectToDb } from './db/db.js'
-import { usersRouter } from './routes/users.routes.js'
+import { dbCS, conectToDb } from './src/db/db.js'
+import { usersRouter } from './src/routes/users.routes.js'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import mongoStore from 'connect-mongo'
 import passport from 'passport'
-import {logger} from './logger.js'
+import {logger} from './src/commons/logger.js'
 import path from 'path';
-import { logedIn } from './middlewares/auth.js'
-import { getServerData } from './controllers/server-data.controller.js'
+import { logedIn } from './src/middlewares/auth.js'
+import { getServerData } from './src/controllers/server-data.controller.js'
 
 import cluster from 'cluster';
 import os from 'os'

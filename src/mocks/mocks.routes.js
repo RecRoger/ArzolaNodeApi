@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { MockProductsList } from './products.mocks.js'
-import { logger } from '../logger.js'
+import { logger } from '../commons/logger.js'
 
 export const mocksRouter = Router()
 

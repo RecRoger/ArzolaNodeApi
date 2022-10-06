@@ -1,7 +1,7 @@
 
 import { Server } from "socket.io";
 import { FileManager } from "../db/fileManager.js";
-import { logger } from '../logger.js'
+import { logger } from '../commons/logger.js'
 
 export const chatFile = new FileManager('chat', []);
 

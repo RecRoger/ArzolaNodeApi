@@ -1,6 +1,6 @@
 // import { FileManager } from "../db/fileManager.js";
 import { productsCollection } from '../models/products.model.js'
-import { logger } from '../logger.js'
+import { logger } from '../commons/logger.js'
 
 
 /** IMPLEMENTACION VIEJA CON Files 
