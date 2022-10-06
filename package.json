@@ -22,8 +22,8 @@
     "artilleryTest": "artillery quick --count 10 -n 20 'http://localhost:8080/info' > FORK.txt",
     "autocannon": "node autocannon.js",
     "0x": "0x server.js 8081",
-    "axios": "node tests/clientProducts.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "axios": "node test/clientProducts.js",
+    "test": "mocha test/test.js"
   },
   "author": "RecRoger",
   "license": "ISC",
@@ -51,5 +51,8 @@
     "pm2": "^5.2.0",
     "socket.io": "^4.5.1",
     "twilio": "^3.82.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.0.0"
   }
 }

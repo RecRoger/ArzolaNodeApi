@@ -30,21 +30,12 @@ async function tryDelete(url) {
   }
 }
 
-
-/**
- *  ## URLS 
-    productsRouter.get('/', GetAllProducts)
-    productsRouter.get('/:id', GetOneProduct)
-    productsRouter.post('/:id', UpdateProduct)
-    productsRouter.delete('/:id', DeleteProduct )
-    productsRouter.post('/', CreateProduct)
- * 
- */
 console.log('>> Bienvenido al cliente de pruebas de la Api Productos de Coderhouse-Roger-Api')
 console.log('>> Se realizarán peticiones con Axios rapidamente al CRUD de Productos')
 console.log('-----------')
 
 console.log('-- START --')
+console.log('-----------')
 console.log("> GET to 'api/products/', GetAllProducts", await tryGet('/'))
 console.log("> GET to 'api/products/:id' con id: 1, GetOneProduct", await tryGet('/1'))
 
@@ -67,5 +58,10 @@ const update = await tryPost(`/${post.data.id}`,{
 console.log(`> POST to 'api/products/:id' con id:${post.data.id}, UpdateProduct`, update)
 
 console.log(`> DELETE to 'api/products/:id' con id: ${post.data.id}, DeleteProduct `, await tryDelete(`/${post.data.id}`))
+
+console.log('-----------')
+
+console.log('--- END ---')
+console.log('-----------')
 
 
