@@ -1,8 +1,8 @@
 node_modules/
 build/
-db/products.txt
-db/chat.txt
-db/carts.txt
+src/db/products.txt
+src/db/chat.txt
+src/db/carts.txt
 .env
 logs/
 uploads/

@@ -117,11 +117,12 @@ if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
 
     // port server listening
     server.listen(PORT, async () => {
+        logger.info(`>> ****************************** <<`)
         await conectToDb()
-        logger.info(`>> Server running on PORT: ${PORT}`)
         logger.info(`>> Process ID: ${process.pid}`)
+        logger.info(`>> Server running on PORT: ${PORT}`)
+        logger.info(`>> _____________________________ <<`)
     });
-
 
 }
 
