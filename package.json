@@ -22,6 +22,7 @@
     "artilleryTest": "artillery quick --count 10 -n 20 'http://localhost:8080/info' > FORK.txt",
     "autocannon": "node autocannon.js",
     "0x": "0x server.js 8081",
+    "axios": "node tests/clientProducts.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "RecRoger",
@@ -29,6 +30,7 @@
   "dependencies": {
     "@faker-js/faker": "^7.3.0",
     "autocannon": "^7.9.0",
+    "axios": "^1.0.0",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "^1.4.6",

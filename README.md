@@ -6,6 +6,7 @@ Aplicacion de ejercicio de curso de Node.
 
 - `npm run start` para levantar el servidor
 - `npm run dev` para correr el servidor con nodemon
+- `npm run axios` para correr el rapido cliente de pureba de la Api Productos al server de heroku
 
 ## Enviroment variables
 
