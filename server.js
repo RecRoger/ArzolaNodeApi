@@ -23,6 +23,7 @@ import cluster from 'cluster';
 import os from 'os'
 
 import compression from 'compression'
+import { graphqlMiddleware } from './src/middlewares/graphqlMiddleware.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -103,6 +104,7 @@ if('CLUSTER' === process.argv[3] && cluster.isPrimary) {
 
 
     // api routes
+    app.use('/graphql', graphqlMiddleware)
     app.use('/api/products', productsRouter)
     app.use('/api/cart', cartRouter)
     app.use('/api/users', usersRouter)

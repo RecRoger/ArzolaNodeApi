@@ -1,0 +1,54 @@
+## testing rutas de graphql '/graphql'
+
+query {
+  getAllProducts {
+      id,
+      name,
+      price,
+      thumbnail
+  }
+}
+
+query {
+    getOneProduct(id: "2") {
+      name,
+      price,
+      thumbnail
+  }
+}
+
+mutation {
+  createProduct(data: {
+      name: "Producto",
+      description: "Descripcion del producto",
+      price: 100,
+      stock: 50,
+      thumbnail: "thumbnail"
+  }) {
+      id,
+      name,
+      price,
+      stock
+  }
+}
+
+mutation {
+  updateProduct(id: "12", data: {
+      name: "Producto 2",
+      description: "Descripcion del producto 2",
+      price: 150,
+      stock: 25,
+      thumbnail: "thumbnail"
+  }) {
+      id,
+      name,
+      price,
+      stock
+  }
+}
+
+mutation {
+  deleteProduct(id: "12") {
+      id
+  }
+}
